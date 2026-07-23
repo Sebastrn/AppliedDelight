@@ -1,0 +1,40 @@
+{
+  "name": "entry.applieddelight.me_cooking_pot.name",
+  "icon": "applieddelight:me_cooking_pot",
+  "category": "applieddelight:main",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "entry.applieddelight.me_cooking_pot.intro"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "applieddelight:me_cooking_pot",
+      "text": "entry.applieddelight.me_cooking_pot.craft"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "entry.applieddelight.me_cooking_pot.link.title",
+      "text": "entry.applieddelight.me_cooking_pot.link"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "entry.applieddelight.me_cooking_pot.cooking.title",
+      "text": "entry.applieddelight.me_cooking_pot.cooking"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "entry.applieddelight.me_cooking_pot.serving.title",
+      "text": "entry.applieddelight.me_cooking_pot.serving"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "entry.applieddelight.me_cooking_pot.battery.title",
+      "text": "entry.applieddelight.me_cooking_pot.battery"
+    }
+  ],
+  "extra_recipe_mappings": {
+    "applieddelight:me_cooking_pot": 1
+  },
+  "sortnum": 0
+}

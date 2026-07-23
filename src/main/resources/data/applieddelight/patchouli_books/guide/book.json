@@ -1,0 +1,10 @@
+{
+  "name": "book.applieddelight.guide.name",
+  "landing_text": "book.applieddelight.guide.landing",
+  "show_progress": false,
+  "version": 1,
+  "i18n": true,
+  "use_resource_pack": true,
+  "index_icon": "applieddelight:me_cooking_pot",
+  "creative_tab": "minecraft:tools_and_utilities"
+}

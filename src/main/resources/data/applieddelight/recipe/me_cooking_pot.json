@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " R ",
+    "TCD"
+  ],
+  "key": {
+    "R": { "item": "ae2:wireless_receiver" },
+    "T": { "item": "ae2:terminal" },
+    "C": { "item": "farmersdelight:cooking_pot" },
+    "D": { "item": "ae2:dense_energy_cell" }
+  },
+  "result": {
+    "id": "applieddelight:me_cooking_pot",
+    "count": 1
+  }
+}

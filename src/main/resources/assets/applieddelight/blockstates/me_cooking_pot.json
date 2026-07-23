@@ -1,0 +1,94 @@
+{
+  "variants": {
+    "facing=north,connected=false,support=none": {
+      "model": "applieddelight:block/me_cooking_pot"
+    },
+    "facing=north,connected=true,support=none": {
+      "model": "applieddelight:block/me_cooking_pot_lit"
+    },
+    "facing=north,connected=false,support=handle": {
+      "model": "applieddelight:block/me_cooking_pot_handle"
+    },
+    "facing=north,connected=true,support=handle": {
+      "model": "applieddelight:block/me_cooking_pot_handle_lit"
+    },
+    "facing=north,connected=false,support=tray": {
+      "model": "applieddelight:block/me_cooking_pot_tray"
+    },
+    "facing=north,connected=true,support=tray": {
+      "model": "applieddelight:block/me_cooking_pot_tray_lit"
+    },
+    "facing=east,connected=false,support=none": {
+      "model": "applieddelight:block/me_cooking_pot",
+      "y": 90
+    },
+    "facing=east,connected=true,support=none": {
+      "model": "applieddelight:block/me_cooking_pot_lit",
+      "y": 90
+    },
+    "facing=east,connected=false,support=handle": {
+      "model": "applieddelight:block/me_cooking_pot_handle",
+      "y": 90
+    },
+    "facing=east,connected=true,support=handle": {
+      "model": "applieddelight:block/me_cooking_pot_handle_lit",
+      "y": 90
+    },
+    "facing=east,connected=false,support=tray": {
+      "model": "applieddelight:block/me_cooking_pot_tray",
+      "y": 90
+    },
+    "facing=east,connected=true,support=tray": {
+      "model": "applieddelight:block/me_cooking_pot_tray_lit",
+      "y": 90
+    },
+    "facing=south,connected=false,support=none": {
+      "model": "applieddelight:block/me_cooking_pot",
+      "y": 180
+    },
+    "facing=south,connected=true,support=none": {
+      "model": "applieddelight:block/me_cooking_pot_lit",
+      "y": 180
+    },
+    "facing=south,connected=false,support=handle": {
+      "model": "applieddelight:block/me_cooking_pot_handle",
+      "y": 180
+    },
+    "facing=south,connected=true,support=handle": {
+      "model": "applieddelight:block/me_cooking_pot_handle_lit",
+      "y": 180
+    },
+    "facing=south,connected=false,support=tray": {
+      "model": "applieddelight:block/me_cooking_pot_tray",
+      "y": 180
+    },
+    "facing=south,connected=true,support=tray": {
+      "model": "applieddelight:block/me_cooking_pot_tray_lit",
+      "y": 180
+    },
+    "facing=west,connected=false,support=none": {
+      "model": "applieddelight:block/me_cooking_pot",
+      "y": 270
+    },
+    "facing=west,connected=true,support=none": {
+      "model": "applieddelight:block/me_cooking_pot_lit",
+      "y": 270
+    },
+    "facing=west,connected=false,support=handle": {
+      "model": "applieddelight:block/me_cooking_pot_handle",
+      "y": 270
+    },
+    "facing=west,connected=true,support=handle": {
+      "model": "applieddelight:block/me_cooking_pot_handle_lit",
+      "y": 270
+    },
+    "facing=west,connected=false,support=tray": {
+      "model": "applieddelight:block/me_cooking_pot_tray",
+      "y": 270
+    },
+    "facing=west,connected=true,support=tray": {
+      "model": "applieddelight:block/me_cooking_pot_tray_lit",
+      "y": 270
+    }
+  }
+}

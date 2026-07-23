@@ -1,0 +1,316 @@
+plugins {
+    id 'java'
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.neoforged.moddev' version '2.0.141'
+    id 'com.modrinth.minotaur' version '2.9.0'
+    // CurseForgeGradle stays on 1.1.28: every release from 1.2.30 up needs a Java 25 JVM to even resolve, and this
+    // toolchain is Java 21. 1.1.28 has everything the publish block uses — addEnvironment/addModLoader/
+    // addGameVersion/addRequirement/addOptional. (Applied Cooking's 26.1.2 branch is on 1.3.33 because it is Java 25.)
+    id 'net.darkhax.curseforgegradle' version '1.1.28'
+}
+
+version = mod_version
+group = mod_group_id
+
+base {
+    archivesName = mod_id
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'NeoForged'
+        url = 'https://maven.neoforged.net/releases'
+    }
+    // Applied Energistics 2 (+ its GuideME dependency) publish to Maven Central as of 1.21.1 (group
+    // org.appliedenergistics).
+    maven {
+        name = 'Modrinth (Farmer\'s Delight, AEInfinityBooster, Jade)'
+        url = 'https://api.modrinth.com/maven'
+        content { includeGroup 'maven.modrinth' }
+    }
+    maven {
+        name = 'BlameJared (JEI, Patchouli)'
+        url = 'https://maven.blamejared.com'
+    }
+    maven {
+        name = 'k-4u (The One Probe)'
+        url = 'https://maven.k-4u.nl'
+    }
+    maven {
+        name = 'shedaniel (Roughly Enough Items)'
+        url = 'https://maven.shedaniel.me/'
+    }
+    maven {
+        name = 'TerraformersMC (EMI)'
+        url = 'https://maven.terraformersmc.com/releases'
+    }
+    maven {
+        name = 'CurseMaven (CurseForge-only test mods)'
+        url = 'https://cursemaven.com'
+        content { includeGroup 'curse.maven' }
+    }
+}
+
+neoForge {
+    version = project.neo_version
+
+    parchment {
+        // Optional mappings; harmless if unavailable. Matches the AE2/FD 1.21.1 toolchain era.
+        minecraftVersion = '1.21.1'
+        mappingsVersion = '2024.11.17'
+    }
+
+    runs {
+        client {
+            client()
+        }
+        server {
+            server()
+        }
+        data {
+            data()
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+// Which recipe viewer runClient loads. Chosen by the dedicated task you invoke (runClientRei / runClientEmi) or
+// -Pviewer=jei|rei|emi; defaults to jei. Resolved at configuration time because it drives which viewer jar is added
+// to the runtime classpath below.
+def selectedViewer = {
+    def requested = gradle.startParameter.taskNames
+    if (requested.any { it.endsWith('runClientRei') }) return 'rei'
+    if (requested.any { it.endsWith('runClientEmi') }) return 'emi'
+    return (findProperty('viewer') ?: 'jei').toString().toLowerCase()
+}()
+
+// runClientRei / runClientEmi: the client run with that viewer instead of JEI. They just drive runClient — the viewer
+// selection above keys off the task name. runClient on its own stays JEI.
+['Rei': 'REI', 'Emi': 'EMI'].each { suffix, label ->
+    tasks.register("runClient${suffix}") {
+        dependsOn 'runClient'
+        group = 'mod development'
+        description = "Runs the game client with ${label} as the recipe viewer instead of JEI."
+    }
+}
+
+dependencies {
+    // Core integrations (compile + dev runtime).
+    implementation "org.appliedenergistics:appliedenergistics2:${ae2_version}"
+    implementation "maven.modrinth:farmers-delight:${fd_version}"
+
+    // Optional: AEInfinityBooster in the dev client to exercise Infinity/Dimension card compatibility.
+    // Compat is detected softly (no compile dependency), so this is runtime-only and only added when the id is set.
+    if (project.findProperty('aeinfinitybooster_version')) {
+        runtimeOnly "maven.modrinth:aeinfinitybooster:${aeinfinitybooster_version}"
+    }
+
+    // Jade: compiled against for the block-tooltip integration, but a SOFT dependency — compileOnly keeps it out of the
+    // published metadata, and Jade only loads our @WailaPlugin class if Jade itself is present.
+    compileOnly "maven.modrinth:jade:${jade_version}"
+    runtimeOnly "maven.modrinth:jade:${jade_version}"
+
+    // The One Probe: the other block-tooltip HUD, same soft-dependency treatment as Jade (the addon class is only
+    // touched behind a ModList check). TOP transitively depends on JEI — left in, that would put JEI on EVERY run's
+    // classpath and defeat the viewer switch below, so it is excluded.
+    compileOnly("mcjty.theoneprobe:theoneprobe:${top_version}") { exclude group: 'mezz.jei' }
+    runtimeOnly("mcjty.theoneprobe:theoneprobe:${top_version}") { exclude group: 'mezz.jei' }
+
+    // Recipe viewers — JEI, REI, EMI. All three are compileOnly: each discovers its plugin by its own classpath scan
+    // (@JeiPlugin / @REIPluginClient / @EmiEntrypoint), so none is bundled and each stays optional.
+    // REI needs the full jar rather than -api: BuiltinClientPlugin (the info-page entry point) lives in REI's
+    // default-plugin module. EMI's -api classifier carries EmiInfoRecipe, so it suffices.
+    compileOnly "mezz.jei:jei-1.21.1-neoforge:${jei_version}"
+    compileOnly("me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}") { exclude group: 'mezz.jei' }
+    compileOnly "dev.emi:emi-neoforge:${emi_version}:api"
+
+    // Exactly one viewer's runtime jar loads — the three cannot share a client (EMI hides itself when JEI is present,
+    // REI+JEI double up):
+    //   ./gradlew runClient                    JEI
+    //   ./gradlew runClientRei / runClientEmi   (or ./gradlew runClient -Pviewer=rei|emi)
+    switch (selectedViewer) {
+        case 'rei':
+            runtimeOnly("me.shedaniel:RoughlyEnoughItems-neoforge:${rei_version}") { exclude group: 'mezz.jei' }
+            break
+        case 'emi':
+            runtimeOnly "dev.emi:emi-neoforge:${emi_version}"
+            break
+        default:
+            runtimeOnly "mezz.jei:jei-1.21.1-neoforge:${jei_version}"
+    }
+
+    // Patchouli — powers the in-game guide book. Resources only (no code dependency), so runtime-only.
+    runtimeOnly "vazkii.patchouli:Patchouli:${patchouli_version}"
+    // FD addons — extra cooking-pot recipes to exercise the recipe grid. These four are on Modrinth (auto-downloaded):
+    runtimeOnly "maven.modrinth:rustic-delight:YRmD0rnR"     // Rustic Delight 1.6.1
+    runtimeOnly "maven.modrinth:farmers-pizzeria:gBsjDqcT"   // Farmer's Pizzeria 1.3.0
+    runtimeOnly "maven.modrinth:roll-delight:JL6kDyww"       // Roll Delight 1.2.4
+    runtimeOnly "maven.modrinth:brewin-and-chewin:MbcR48Ou"  // Brewin' And Chewin' 4.5.0
+    // Farmer's Sandwiches is CurseForge-only, so it comes via CurseMaven (curse.maven:<slug>-<projectId>:<fileId>).
+    runtimeOnly "curse.maven:farmers-sandwiches-1527587:8209287"  // Farmer's Sandwiches 0.1.2
+
+    // FTB Library — dev-only in-game NBT inspector/editor (its "/ftblibrary nbtedit" GUI, for reading the pot's stored
+    // link/energy/meal data live). CurseForge-only, so via CurseMaven; it REQUIRES Architectury API at runtime, and
+    // CurseMaven does not resolve dependencies itself, so Architectury (on Modrinth) is added alongside it.
+    runtimeOnly "curse.maven:ftb-library-forge-404465:8438216"   // FTB Library 2101.1.33 (NeoForge 1.21.1)
+    runtimeOnly "maven.modrinth:architectury-api:ZxYGwlk0"       // Architectury API 13.0.8+neoforge (FTB Library dep)
+}
+
+tasks.named('processResources', ProcessResources).configure {
+    var replaceProperties = [
+            minecraft_version   : minecraft_version, minecraft_version_range: minecraft_version_range,
+            neo_version         : neo_version, neo_version_range: neo_version_range,
+            loader_version_range: loader_version_range,
+            mod_id              : mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
+            mod_authors         : mod_authors, mod_description: mod_description,
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/neoforge.mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+// --- Publishing to Modrinth + CurseForge ------------------------------------------------------
+// Run manually (e.g. from IntelliJ's Gradle tool window, or the CLI):
+//   ./gradlew modrinth            -> Modrinth
+//   ./gradlew publishCurseForge   -> CurseForge
+//   ./gradlew modrinth publishCurseForge   -> both
+// Tokens are read from ~/.gradle/gradle.properties (MODRINTH_TOKEN / CURSEFORGE_TOKEN) or the
+// matching environment variables — NEVER commit them. Project ids live in gradle.properties.
+// Tip: `modrinth { debugMode = true }` (or `--stacktrace`) to dry-run Modrinth without uploading.
+//
+// ⚠️ Applied Delight has not been published yet, so curseforge_id / modrinth_id in gradle.properties are still
+// empty. Create the project on each site first, then paste its id in. The checkPublishIds task below says so
+// rather than letting the upload fail with an opaque API error.
+
+// Publish only the section for the version being released. Modrinth and CurseForge render a changelog per file, so
+// uploading the whole CHANGELOG.md would repeat every past release on every version's page and grow forever. The full
+// history stays in CHANGELOG.md in the repo. Preview what will be sent with: ./gradlew printChangelog
+def changelogFor(File file, String version) {
+    if (!file.exists()) {
+        return 'See the project page for the changelog.'
+    }
+    def wanted = ~('^##\s+' + java.util.regex.Pattern.quote(version) + '\s*$')
+    def collected = []
+    def inSection = false
+    for (String line : file.readLines('UTF-8')) {
+        if (line.startsWith('## ')) {
+            if (inSection) {
+                break // reached the next version — stop
+            }
+            inSection = wanted.matcher(line.trim()).matches()
+            continue // never include the heading itself; the platform already shows the version
+        }
+        if (inSection) {
+            collected << line
+        }
+    }
+    def text = collected.join('\n').trim()
+    return text ?: 'See the project page for the changelog.'
+}
+
+def changelogText = changelogFor(rootProject.file('CHANGELOG.md'), mod_version.toString())
+
+tasks.register('printChangelog') {
+    group = 'publishing'
+    description = 'Prints the changelog section that would be published for the current version.'
+    doLast {
+        println "--- changelog to publish for ${mod_version} ---"
+        println changelogText
+        println '--- end ---'
+    }
+}
+
+// Ids are read once here so the tasks below can be registered only when they can actually run. Registering
+// CurseForgeGradle's task with an empty id fails at CONFIGURATION time ("For input string: \"\""), which would break
+// every Gradle invocation in the project, not just publishing.
+def modrinthId = (findProperty('modrinth_id') ?: '').toString().trim()
+def curseforgeId = (findProperty('curseforge_id') ?: '').toString().trim()
+
+tasks.register('checkPublishIds') {
+    group = 'publishing'
+    description = 'Reports whether the Modrinth / CurseForge project ids have been filled in yet.'
+    doLast {
+        println "modrinth_id   = ${modrinthId ?: '(empty — create the project on Modrinth, then paste the id from Settings > General)'}"
+        println "curseforge_id = ${curseforgeId ?: '(empty — create the project on CurseForge, then paste the Project ID shown on its page)'}"
+    }
+}
+
+if (modrinthId) {
+    modrinth {
+        token = providers.gradleProperty('MODRINTH_TOKEN').orElse(providers.environmentVariable('MODRINTH_TOKEN'))
+        projectId = modrinthId
+        versionNumber = mod_version
+        versionName = mod_version
+        versionType = 'release'
+        uploadFile = tasks.named('jar')
+        gameVersions = ['1.21.1']
+        loaders = ['neoforge']
+        changelog = changelogText
+        // Modrinth project slugs. ae2_NOTE
+        dependencies {
+            required.project 'ae2'
+            required.project 'farmers-delight'
+            optional.project 'patchouli'
+            optional.project 'jade'
+            optional.project 'the-one-probe'
+            optional.project 'jei'
+            optional.project 'emi'
+            optional.project 'rei'
+        }
+    }
+} else {
+    tasks.named('modrinth').configure {
+        doFirst {
+            throw new GradleException('modrinth_id is empty in gradle.properties. Create the project on Modrinth ' +
+                    'first, then paste its id (Settings > General) in. Run ./gradlew checkPublishIds to re-check.')
+        }
+    }
+}
+
+if (curseforgeId) {
+    tasks.register('publishCurseForge', net.darkhax.curseforgegradle.TaskPublishCurseForge) {
+        group = 'publishing'
+        description = 'Uploads the built jar to CurseForge.'
+        apiToken = findProperty('CURSEFORGE_TOKEN') ?: System.getenv('CURSEFORGE_TOKEN')
+
+        def mainFile = upload(curseforgeId, tasks.named('jar'))
+        // displayName left unset on purpose -> CurseForge shows the jar's file name (applieddelight-<version>.jar).
+        mainFile.releaseType = 'release'
+        mainFile.addGameVersion '1.21.1'
+        mainFile.addModLoader 'NeoForge'
+        mainFile.addEnvironment 'Client', 'Server'
+        mainFile.changelogType = 'markdown'
+        mainFile.changelog = changelogText
+        // CurseForge project slugs. applied-energistics-2, patchouli, jade, the-one-probe and jei are the slugs
+        // Applied Cooking already publishes against; farmers-delight, emi and roughly-enough-items could not be
+        // verified from here (CurseForge blocks scripted requests) — a wrong slug fails this task loudly, so fix it
+        // if the upload complains about an unknown project.
+        mainFile.addRequirement 'applied-energistics-2', 'farmers-delight'
+        mainFile.addOptional 'patchouli', 'jade', 'the-one-probe', 'jei', 'emi', 'roughly-enough-items'
+    }
+} else {
+    tasks.register('publishCurseForge') {
+        group = 'publishing'
+        description = 'Uploads the built jar to CurseForge (needs curseforge_id first).'
+        doLast {
+            throw new GradleException('curseforge_id is empty in gradle.properties. Create the project on ' +
+                    'CurseForge first, then paste its Project ID in. Run ./gradlew checkPublishIds to re-check.')
+        }
+    }
+}
