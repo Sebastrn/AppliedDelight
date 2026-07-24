@@ -2,6 +2,10 @@
 
 All notable changes to **Applied Delight** are listed here.
 
+## 1.0.1
+
+Replaced logo image with a properly sourced asset
+
 ## 1.0.0
 
 First release. Adds the **ME Cooking Pot** — a Farmer's Delight cooking pot that draws its ingredients from your
