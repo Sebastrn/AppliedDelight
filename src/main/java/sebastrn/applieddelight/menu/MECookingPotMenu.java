@@ -112,7 +112,7 @@ public class MECookingPotMenu extends AbstractContainerMenu {
                 return false;
             }
         });
-        // Serving-container input (bowls/bottles): the player may place them here; the pot also auto-pulls from the network.
+        // Serving-container input (bowls/bottles): the player may place them here, or use the request-containers button; the pot never pulls containers on its own.
         addSlot(new SlotItemHandler(inventory, MECookingPotBlockEntity.CONTAINER_SLOT, 92, 55));
         // Output: served meals land here (take them from here); cannot be placed into (FD's CookingPotResultSlot).
         addSlot(new SlotItemHandler(inventory, MECookingPotBlockEntity.OUTPUT_SLOT, 124, 55) {
@@ -220,7 +220,7 @@ public class MECookingPotMenu extends AbstractContainerMenu {
                 return blockEntity.topUpBatch(holder.value(), request) > 0;
             }
 
-            // Switching recipes clears the previous order out first (to the player, then network as overflow). The
+            // Switching recipes clears the previous order out first (to the network first, player inventory as fallback). The
             // output is left alone — those are the player's finished servings — and a waiting meal stays put, so the
             // new batch simply cooks once the meal has been served out. No network link is required: an unlinked or
             // flat pot works as a plain cooking pot, sourcing only from the player's inventory.

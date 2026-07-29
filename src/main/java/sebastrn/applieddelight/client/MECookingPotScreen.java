@@ -348,10 +348,6 @@ public class MECookingPotScreen extends AbstractContainerScreen<MECookingPotMenu
     }
 
     /**
-     * Small "send the pot's contents back" button. The pot refuses a new recipe while anything is loaded, so this is
-     * the one-click way to free it without dragging every slot out by hand.
-     */
-    /**
      * A raised button face with the same depth cue vanilla's widgets (and the recipe-book toggle) have: a dark outline,
      * a lit top/left edge and a shaded bottom/right edge. Without this the flat grey squares did not read as clickable.
      */

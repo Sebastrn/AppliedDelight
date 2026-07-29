@@ -19,7 +19,7 @@ import sebastrn.applieddelight.item.MECookingPotItem;
 
 /**
  * Shows the placed pot's battery and link state in Jade's HUD, matching what the item tooltip shows in the inventory —
- * the same pair of lines AE2's Wireless Terminal uses, via AE2's own {@link Tooltips}/{@link GuiText}.
+ * the same pair of lines AE2's Wireless Terminal uses, via AE2's own {@link Tooltips}/{@code GuiText}.
  *
  * <p>Jade discovers this class by scanning for {@link WailaPlugin}; nothing in the mod references it. Jade is therefore
  * a soft dependency (compileOnly), and none of this loads when Jade is absent.

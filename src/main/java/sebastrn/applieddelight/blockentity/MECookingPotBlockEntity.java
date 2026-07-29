@@ -138,7 +138,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
     private IGrid grid;
     private int ticksSinceNetworkRefresh = NETWORK_REFRESH_INTERVAL;
 
-    /** Container-data slots synced to the menu: cookTime, cookTimeTotal, connected, energy%. */
+    /** Container-data slots synced to the menu: cookTime, cookTimeTotal, link state, energy%, containerRequestFailures. */
     public static final int DATA_SLOTS = 5;
     /** Bumped whenever a container request finds nothing, so the screen can flash the button red. */
     private int containerRequestFailures;
@@ -323,8 +323,8 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
             }
         }
         // Items already sitting in the pot's own input slots count too. On a recipe click the pot returns them (to the
-        // player first) and re-pulls them into the batch, so they are as available to a craft as anything in your bag —
-        // this is what a partially hand-loaded pot needs. A fluid-conjured bucket is not real returnable stock, so it is
+        // network first, inventory as fallback) and re-pulls them into the batch, so they are as available to a craft as anything in your bag.
+        // This is what a partially hand-loaded pot needs. A fluid-conjured bucket is not real returnable stock, so it is
         // skipped. The one recipe these are NOT counted for is the one currently loaded (below): its input IS its
         // committed batch, which a re-click tops up rather than returns.
         for (int i = 0; i < INPUT_SLOTS; i++) {
@@ -466,11 +466,6 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
         return Math.max(0, MEAL_CAPACITY - used) / Math.max(1, result.getCount());
     }
 
-    /**
-     * Add to the availability list, folding into an existing entry for the same item variant. The player's inventory
-     * spreads one item across several slots, and the network lists it once — without merging, per-variant totals would
-     * see whichever copy came first rather than the real total.
-     */
     /** Buckets-worth of network fluid available for {@code ingredient}, if it accepts a filled bucket (milk/water). */
     private static long fluidBucketsFor(Ingredient ingredient, Map<Fluid, Long> networkFluids) {
         for (ItemStack candidate : ingredient.getItems()) {
@@ -591,19 +586,6 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
         return false;
     }
 
-    /**
-     * Attempt to fill the (empty) input slots with the ingredients of {@code recipe}. Each ingredient is sourced, in
-     * order of preference, from: a matching <em>item</em> in the ME network; the matching <em>fluid</em> in the network
-     * if the ingredient accepts a filled bucket (milk/water), conjuring a bucket for the cook; or the open menu's
-     * player inventory.
-     *
-     * <p>The player inventory is a real source, not a display convenience — {@link #computeMaxCraftable} counts it when
-     * it tells the recipe list "Can make: 5", so cooking has to be able to reach the same items or that count lies.
-     * Only network-sourced ingredients cost battery; taking an item the player is holding involves no network access.
-     *
-     * <p>Everything is planned against a snapshot before anything is consumed, so a craft that cannot complete spends
-     * no battery and leaves the pot empty rather than half-filled.
-     */
     /**
      * Load a whole batch of {@code requested} crafts into the pot in one go, then hand ownership to the pot: from here
      * the cook needs only heat, touching neither the network nor the player again.
@@ -1008,9 +990,10 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
     }
 
     /**
-     * Send one slot's contents outward. {@code playerFirst} chooses the order: the recipe switch prefers the player
-     * (Farmer's Delight behaviour), the send-to-network button prefers the network. Either way the floor is the last
-     * resort, so nothing is ever destroyed.
+     * Send one slot's contents outward. {@code playerFirst} chooses the order: true tries the player's inventory
+     * before the network, false the network before the player. Both current callers (the recipe switch and the
+     * send-to-network button) pass false, so ingredients go to the network first with the player's inventory as the
+     * fallback. Either way the floor is the last resort, so nothing is ever destroyed.
      */
     private void releaseSlot(int slot, @Nullable Player player, boolean playerFirst) {
         // A bucket conjured from a network fluid was never a real item; the bucket is voided, but the fluid inside it
