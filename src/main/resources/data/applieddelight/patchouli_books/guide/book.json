@@ -3,6 +3,8 @@
   "landing_text": "book.applieddelight.guide.landing",
   "show_progress": false,
   "version": 1,
+  "book_texture": "applieddelight:textures/gui/book.png",
+  "model": "applieddelight:guidebook",
   "i18n": true,
   "use_resource_pack": true,
   "index_icon": "applieddelight:me_cooking_pot",

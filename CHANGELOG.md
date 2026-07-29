@@ -2,6 +2,10 @@
 
 All notable changes to **Applied Delight** are listed here.
 
+## 1.0.2
+
+Gave the guide book a custom look: an illustrated book icon and a themed open-book GUI (fluix cover, leather-bound), replacing the default Patchouli textures.
+
 ## 1.0.1
 
 Replaced logo image with a properly sourced asset
