@@ -1,0 +1,30 @@
+{
+  "itemGroup.applieddelight": "Applied Delight",
+  "block.applieddelight.me_cooking_pot": "Panela ME",
+  "gui.applieddelight.recipes": "Receitas",
+  "tooltip.applieddelight.unlinked": "Não vinculada a uma rede",
+  "tooltip.applieddelight.linked": "Vinculada a um Ponto de Acesso Sem Fio",
+
+  "config.jade.plugin_applieddelight.me_cooking_pot": "Panela ME",
+
+  "jei.applieddelight.me_cooking_pot.1": "Uma panela do Farmer's Delight que puxa seus ingredientes de uma rede ME. Ela ainda precisa de uma fonte de calor embaixo para cozinhar.",
+  "jei.applieddelight.me_cooking_pot.2": "Vincule-a colocando-a no slot de um Ponto de Acesso Sem Fio. Escolha uma receita no painel e a panela puxa tudo o que precisa, primeiro do seu inventário, depois da rede.",
+  "jei.applieddelight.me_cooking_pot.3": "As refeições ficam na panela até você fornecer recipientes de servir, à mão ou com o botão de solicitar. Só os itens puxados da rede consomem bateria. Carregue a bateria em um Carregador AE2, de qualquer fonte de FE, ou com um cabo de energia encostado na lateral de uma panela colocada.",
+
+  "book.applieddelight.guide.name": "Applied Delight",
+  "book.applieddelight.guide.landing": "A culinária do Farmer's Delight, conectada a uma rede ME. $(br2)Tudo o que a panela comum faz, além de ingredientes à disposição direto do armazenamento.",
+  "category.applieddelight.main.name": "Applied Delight",
+  "category.applieddelight.main.description": "A Panela ME: vincular, cozinhar e servir.",
+
+  "entry.applieddelight.me_cooking_pot.name": "Panela ME",
+  "entry.applieddelight.me_cooking_pot.intro": "A $(item)Panela ME$() é uma panela do Farmer's Delight que consegue alcançar uma rede ME para pegar seus ingredientes.$(br2)Ela ainda é uma panela: precisa de uma $(thing)fonte de calor$() embaixo, e cozinha as mesmas receitas na mesma velocidade.",
+  "entry.applieddelight.me_cooking_pot.craft": "Fabricada a partir de uma panela e das peças de um Terminal Sem Fio.",
+  "entry.applieddelight.me_cooking_pot.link.title": "Vinculando",
+  "entry.applieddelight.me_cooking_pot.link": "Coloque a panela no slot de um $(thing)Ponto de Acesso Sem Fio$() para vinculá-la.$(br2)O vínculo só diz $(o)a qual rede$() a panela pertence. O alcance é medido a partir de cada ponto de acesso daquela rede, então construir um mais perto da panela simplesmente funciona, sem precisar vincular de novo.$(br2)Alcance e dimensão são assunto da rede: instale $(thing)Amplificadores Sem Fio$() em um ponto de acesso para estender a cobertura.",
+  "entry.applieddelight.me_cooking_pot.cooking.title": "Cozinhando",
+  "entry.applieddelight.me_cooking_pot.cooking": "Coloque os ingredientes à mão e ela se comporta exatamente como a panela comum.$(br2)Ou abra o $(thing)painel de receitas$() e clique numa receita: a panela puxa uma única porção. $(thing)Shift + clique$() puxa quantas ela conseguir segurar de uma vez.$(br2)Os ingredientes vêm $(o)primeiro do seu inventário$(), depois da rede.",
+  "entry.applieddelight.me_cooking_pot.serving.title": "Servindo",
+  "entry.applieddelight.me_cooking_pot.serving": "As refeições prontas se acumulam dentro da panela, até $(thing)64$(), por menor que seja o tamanho de pilha da própria refeição.$(br2)Elas só saem quando o $(thing)recipiente de servir$() da receita é fornecido: coloque tigelas ou garrafas no slot de recipiente, ou pressione o botão de $(thing)solicitar$() para puxá-las da rede.$(br2)Quebre a panela e qualquer refeição à espera viaja dentro dela.",
+  "entry.applieddelight.me_cooking_pot.battery.title": "Bateria",
+  "entry.applieddelight.me_cooking_pot.battery": "A panela carrega a própria bateria, carregada em um $(thing)Carregador AE2$(), de qualquer fonte de FE, ou por um $(thing)cabo de energia$() ligado à lateral de uma panela colocada.$(br2)Ela paga $(o)apenas pelo acesso à rede$(): itens tirados do seu próprio inventário são de graça, e cozinhar em si não custa nada. Manter o vínculo aberto consome um fio de energia em repouso.$(br2)A bateria e o vínculo sobrevivem a quebrar e recolocar a panela."
+}

@@ -1,0 +1,30 @@
+{
+  "itemGroup.applieddelight": "Applied Delight",
+  "block.applieddelight.me_cooking_pot": "ME 조리 냄비",
+  "gui.applieddelight.recipes": "레시피",
+  "tooltip.applieddelight.unlinked": "네트워크에 연결되지 않음",
+  "tooltip.applieddelight.linked": "무선 액세스 포인트에 연결됨",
+
+  "config.jade.plugin_applieddelight.me_cooking_pot": "ME 조리 냄비",
+
+  "jei.applieddelight.me_cooking_pot.1": "ME 네트워크에서 재료를 가져오는 Farmer's Delight 조리 냄비입니다. 요리하려면 여전히 아래에 열원이 필요합니다.",
+  "jei.applieddelight.me_cooking_pot.2": "무선 액세스 포인트의 슬롯에 넣어 연결하세요. 패널에서 레시피를 고르면 냄비가 필요한 모든 것을, 먼저 인벤토리에서 그다음 네트워크에서 가져옵니다.",
+  "jei.applieddelight.me_cooking_pot.3": "완성된 요리는 담을 용기를 손으로 넣거나 요청 버튼으로 제공할 때까지 냄비 안에 머뭅니다. 네트워크에서 가져온 아이템만 배터리를 소모합니다. 배터리는 AE2 충전기에서, 모든 FE 공급원에서, 또는 설치된 냄비 옆면에 연결한 에너지 케이블로 충전할 수 있습니다.",
+
+  "book.applieddelight.guide.name": "Applied Delight",
+  "book.applieddelight.guide.landing": "ME 네트워크에 연결된 Farmer's Delight 요리. $(br2)바닐라 조리 냄비가 하는 모든 것에, 저장고에서 바로 꺼내 쓰는 재료가 더해집니다.",
+  "category.applieddelight.main.name": "Applied Delight",
+  "category.applieddelight.main.description": "ME 조리 냄비: 연결, 요리, 제공.",
+
+  "entry.applieddelight.me_cooking_pot.name": "ME 조리 냄비",
+  "entry.applieddelight.me_cooking_pot.intro": "$(item)ME 조리 냄비$()는 재료를 얻기 위해 ME 네트워크에 접근할 수 있는 Farmer's Delight 조리 냄비입니다.$(br2)여전히 조리 냄비입니다. 아래에 $(thing)열원$()이 필요하고, 같은 레시피를 같은 속도로 요리합니다.",
+  "entry.applieddelight.me_cooking_pot.craft": "조리 냄비와 무선 터미널의 부품으로 제작합니다.",
+  "entry.applieddelight.me_cooking_pot.link.title": "연결하기",
+  "entry.applieddelight.me_cooking_pot.link": "$(thing)무선 액세스 포인트$()의 슬롯에 냄비를 넣어 연결하세요.$(br2)이 연결은 냄비가 $(o)어느 네트워크$()에 속하는지만 나타냅니다. 도달 범위는 그 네트워크의 모든 액세스 포인트를 기준으로 판단되므로, 냄비에 더 가까운 것을 하나 지으면 그대로 작동합니다. 다시 연결할 필요가 없습니다.$(br2)범위와 차원은 네트워크가 담당합니다. 액세스 포인트에 $(thing)무선 부스터$()를 설치하면 적용 범위가 넓어집니다.",
+  "entry.applieddelight.me_cooking_pot.cooking.title": "요리하기",
+  "entry.applieddelight.me_cooking_pot.cooking": "재료를 손으로 넣으면 바닐라 냄비와 똑같이 작동합니다.$(br2)또는 $(thing)레시피 패널$()을 열고 레시피를 클릭하면 냄비가 1인분을 가져옵니다. $(thing)Shift-클릭$()하면 한 번에 담을 수 있는 만큼 가져옵니다.$(br2)재료는 $(o)먼저 인벤토리에서$(), 그다음 네트워크에서 가져옵니다.",
+  "entry.applieddelight.me_cooking_pot.serving.title": "제공하기",
+  "entry.applieddelight.me_cooking_pot.serving": "완성된 요리는 냄비 안에 모입니다. 요리 자체의 최대 개수가 아무리 작아도 $(thing)64$()개까지 쌓입니다.$(br2)레시피의 $(thing)담을 용기$()가 제공되어야만 꺼낼 수 있습니다. 그릇이나 병을 용기 슬롯에 넣거나, $(thing)요청$() 버튼을 눌러 네트워크에서 가져오세요.$(br2)냄비를 부수면 대기 중이던 요리도 그 안에 담겨 함께 이동합니다.",
+  "entry.applieddelight.me_cooking_pot.battery.title": "배터리",
+  "entry.applieddelight.me_cooking_pot.battery": "냄비는 자체 배터리를 가지고 있으며, $(thing)AE2 충전기$()에서, 모든 FE 공급원에서, 또는 설치된 냄비 옆면에 연결한 $(thing)에너지 케이블$()로 충전합니다.$(br2)배터리는 $(o)네트워크 접근에만$() 사용됩니다. 자신의 인벤토리에서 가져온 아이템은 무료이고, 요리 자체는 아무 비용도 들지 않습니다. 연결을 유지하는 동안에는 소량의 대기 전력이 소모됩니다.$(br2)배터리와 연결은 모두 냄비를 부수고 다시 설치해도 유지됩니다."
+}

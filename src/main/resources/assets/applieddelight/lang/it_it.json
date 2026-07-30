@@ -1,0 +1,30 @@
+{
+  "itemGroup.applieddelight": "Applied Delight",
+  "block.applieddelight.me_cooking_pot": "Pentola da Cucina ME",
+  "gui.applieddelight.recipes": "Ricette",
+  "tooltip.applieddelight.unlinked": "Non collegata a una rete",
+  "tooltip.applieddelight.linked": "Collegata a un Punto d'accesso wireless",
+
+  "config.jade.plugin_applieddelight.me_cooking_pot": "Pentola da Cucina ME",
+
+  "jei.applieddelight.me_cooking_pot.1": "Una pentola da cucina di Farmer's Delight che attinge i suoi ingredienti da una rete ME. Necessita comunque di una fonte di calore sotto di sé per cucinare.",
+  "jei.applieddelight.me_cooking_pot.2": "Collegala inserendola nello slot di un Punto d'accesso wireless. Scegli una ricetta dal pannello e la pentola preleva tutto ciò che le serve: prima dal tuo inventario, poi dalla rete.",
+  "jei.applieddelight.me_cooking_pot.3": "Le pietanze restano nella pentola finché non le fornisci dei contenitori da portata, a mano o con il pulsante di richiesta. Solo gli oggetti prelevati dalla rete consumano batteria. Carica la batteria in un Caricatore AE2, da qualsiasi fonte FE, o con un cavo di energia a contatto con il lato di una pentola posizionata.",
+
+  "book.applieddelight.guide.name": "Applied Delight",
+  "book.applieddelight.guide.landing": "Cucina di Farmer's Delight, collegata a una rete ME. $(br2)Tutto ciò che fa la normale pentola da cucina, più gli ingredienti a portata di mano dallo stoccaggio.",
+  "category.applieddelight.main.name": "Applied Delight",
+  "category.applieddelight.main.description": "La Pentola da Cucina ME: collegamento, cottura e servizio.",
+
+  "entry.applieddelight.me_cooking_pot.name": "Pentola da Cucina ME",
+  "entry.applieddelight.me_cooking_pot.intro": "La $(item)Pentola da Cucina ME$() è una pentola da cucina di Farmer's Delight che può attingere a una rete ME per i suoi ingredienti.$(br2)Resta comunque una pentola da cucina: necessita di una $(thing)fonte di calore$() sotto di sé e cucina le stesse ricette alla stessa velocità.",
+  "entry.applieddelight.me_cooking_pot.craft": "Si fabbrica con una pentola da cucina e le parti di un Terminale wireless.",
+  "entry.applieddelight.me_cooking_pot.link.title": "Collegamento",
+  "entry.applieddelight.me_cooking_pot.link": "Inserisci la pentola nello slot di un $(thing)Punto d'accesso wireless$() per collegarla.$(br2)Il collegamento indica solo $(o)a quale rete$() appartiene la pentola. La portata è calcolata rispetto a ogni punto d'accesso di quella rete, quindi costruirne uno più vicino alla pentola funziona senza problemi, non serve ricollegarla.$(br2)La portata e la dimensione sono affari della rete: installa dei $(thing)Booster wireless$() in un punto d'accesso per estendere la copertura.",
+  "entry.applieddelight.me_cooking_pot.cooking.title": "Cottura",
+  "entry.applieddelight.me_cooking_pot.cooking": "Carica gli ingredienti a mano e si comporta esattamente come la pentola normale.$(br2)Oppure apri il $(thing)pannello delle ricette$() e fai clic su una ricetta: la pentola preleva una singola porzione. $(thing)Shift-click$() ne preleva quante ne può contenere in una volta.$(br2)Gli ingredienti provengono $(o)prima dal tuo inventario$(), poi dalla rete.",
+  "entry.applieddelight.me_cooking_pot.serving.title": "Servire",
+  "entry.applieddelight.me_cooking_pot.serving": "Le pietanze cucinate si raccolgono dentro la pentola, fino a $(thing)64$(), per quanto piccola sia la dimensione della pila della pietanza.$(br2)Escono solo quando viene fornito il $(thing)contenitore da portata$() della ricetta: metti ciotole o bottiglie nello slot del contenitore, oppure premi il pulsante di $(thing)richiesta$() per prelevarle dalla rete.$(br2)Rompi la pentola e qualsiasi pietanza in attesa viaggia al suo interno.",
+  "entry.applieddelight.me_cooking_pot.battery.title": "Batteria",
+  "entry.applieddelight.me_cooking_pot.battery": "La pentola porta con sé la propria batteria, caricata in un $(thing)Caricatore AE2$(), da qualsiasi fonte FE, o tramite un $(thing)cavo di energia$() collegato al lato di una pentola posizionata.$(br2)Paga solo per l'$(o)accesso alla rete$(): gli oggetti presi dal tuo inventario sono gratuiti, e cucinare di per sé non costa nulla. Tenere aperto il collegamento consuma un piccolo flusso costante a riposo.$(br2)Sia la batteria sia il collegamento sopravvivono alla rottura e al riposizionamento della pentola."
+}

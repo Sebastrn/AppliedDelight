@@ -1,0 +1,30 @@
+{
+  "itemGroup.applieddelight": "Applied Delight",
+  "block.applieddelight.me_cooking_pot": "ME-kokgryta",
+  "gui.applieddelight.recipes": "Recept",
+  "tooltip.applieddelight.unlinked": "Inte länkad till ett nätverk",
+  "tooltip.applieddelight.linked": "Länkad till en Trådlös åtkomstpunkt",
+
+  "config.jade.plugin_applieddelight.me_cooking_pot": "ME-kokgryta",
+
+  "jei.applieddelight.me_cooking_pot.1": "En Farmer's Delight-kokgryta som hämtar sina ingredienser från ett ME-nätverk. Den behöver fortfarande en värmekälla under sig för att laga mat.",
+  "jei.applieddelight.me_cooking_pot.2": "Länka den genom att placera den i en Trådlös åtkomstpunkts plats. Välj ett recept i panelen så hämtar grytan allt den behöver, först från ditt inventarium och sedan från nätverket.",
+  "jei.applieddelight.me_cooking_pot.3": "Måltider stannar i grytan tills du ger den serveringskärl, för hand eller med begär-knappen. Endast föremål som hämtas från nätverket kostar batteri. Ladda batteriet i en AE2-laddare, från valfri FE-källa, eller med en energikabel mot sidan av en placerad gryta.",
+
+  "book.applieddelight.guide.name": "Applied Delight",
+  "book.applieddelight.guide.landing": "Farmer's Delight-matlagning, kopplad till ett ME-nätverk. $(br2)Allt som den vanliga kokgrytan gör, plus ingredienser direkt från lagret.",
+  "category.applieddelight.main.name": "Applied Delight",
+  "category.applieddelight.main.description": "ME-kokgrytan: länka, laga och servera.",
+
+  "entry.applieddelight.me_cooking_pot.name": "ME-kokgryta",
+  "entry.applieddelight.me_cooking_pot.intro": "$(item)ME-kokgrytan$() är en Farmer's Delight-kokgryta som kan nå in i ett ME-nätverk efter sina ingredienser.$(br2)Den är fortfarande en kokgryta: den behöver en $(thing)värmekälla$() under sig och lagar samma recept i samma hastighet.",
+  "entry.applieddelight.me_cooking_pot.craft": "Tillverkas av en kokgryta och delarna från en Trådlös terminal.",
+  "entry.applieddelight.me_cooking_pot.link.title": "Länka den",
+  "entry.applieddelight.me_cooking_pot.link": "Placera grytan i platsen på en $(thing)Trådlös åtkomstpunkt$() för att länka den.$(br2)Länken säger bara $(o)vilket nätverk$() grytan tillhör. Räckvidden bedöms mot varje åtkomstpunkt på det nätverket, så att bygga en närmare grytan fungerar bara, du behöver inte länka igen.$(br2)Räckvidd och dimension är nätverkets ensak: installera $(thing)Trådlösa boostrar$() i en åtkomstpunkt för att utöka täckningen.",
+  "entry.applieddelight.me_cooking_pot.cooking.title": "Laga mat",
+  "entry.applieddelight.me_cooking_pot.cooking": "Ladda ingredienser för hand så beter den sig precis som den vanliga grytan.$(br2)Eller öppna $(thing)receptpanelen$() och klicka på ett recept: grytan hämtar en enda portion. $(thing)Skift-klick$() hämtar så många den kan rymma på en gång.$(br2)Ingredienser kommer $(o)först från ditt inventarium$(), sedan från nätverket.",
+  "entry.applieddelight.me_cooking_pot.serving.title": "Servera",
+  "entry.applieddelight.me_cooking_pot.serving": "Tillagade måltider samlas inuti grytan, upp till $(thing)64$(), hur liten måltidens egen stapelstorlek än är.$(br2)De kommer bara ut när receptets $(thing)serveringskärl$() tillhandahålls: lägg skålar eller flaskor i behållarplatsen, eller tryck på $(thing)begär$()-knappen för att hämta dem från nätverket.$(br2)Bryt grytan så följer varje väntande måltid med inuti den.",
+  "entry.applieddelight.me_cooking_pot.battery.title": "Batteri",
+  "entry.applieddelight.me_cooking_pot.battery": "Grytan bär sitt eget batteri, som laddas i en $(thing)AE2-laddare$(), från valfri FE-källa, eller med en $(thing)energikabel$() dragen in i sidan på en placerad gryta.$(br2)Det betalar bara för $(o)nätverksåtkomst$(): föremål som tas från ditt eget inventarium är gratis, och själva matlagningen kostar ingenting. Att hålla länken öppen drar lite ström i viloläge.$(br2)Batteriet och länken överlever båda att grytan bryts och placeras om."
+}

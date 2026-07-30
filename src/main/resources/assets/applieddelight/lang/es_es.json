@@ -1,0 +1,30 @@
+{
+  "itemGroup.applieddelight": "Applied Delight",
+  "block.applieddelight.me_cooking_pot": "ME Olla de Cocina",
+  "gui.applieddelight.recipes": "Recetas",
+  "tooltip.applieddelight.unlinked": "No vinculada a una red",
+  "tooltip.applieddelight.linked": "Vinculada a un Punto de Acceso Inalámbrico",
+
+  "config.jade.plugin_applieddelight.me_cooking_pot": "ME Olla de Cocina",
+
+  "jei.applieddelight.me_cooking_pot.1": "Una olla de cocina de Farmer's Delight que saca sus ingredientes de una red ME. Sigue necesitando una fuente de calor debajo para cocinar.",
+  "jei.applieddelight.me_cooking_pot.2": "Vincúlala colocándola en la ranura de un Punto de Acceso Inalámbrico. Elige una receta del panel y la olla saca todo lo que necesita: primero de tu inventario y luego de la red.",
+  "jei.applieddelight.me_cooking_pot.3": "Las comidas permanecen en la olla hasta que le das recipientes de servir, a mano o con el botón de petición. Solo los objetos sacados de la red consumen batería. Carga la batería en un Cargador de AE2, desde cualquier fuente de FE o con un cable de energía pegado al lateral de una olla colocada.",
+
+  "book.applieddelight.guide.name": "Applied Delight",
+  "book.applieddelight.guide.landing": "Cocina de Farmer's Delight, conectada a una red ME. $(br2)Todo lo que hace la olla de cocina normal, además de ingredientes al instante desde el almacenamiento.",
+  "category.applieddelight.main.name": "Applied Delight",
+  "category.applieddelight.main.description": "La ME Olla de Cocina: vinculación, cocción y servicio.",
+
+  "entry.applieddelight.me_cooking_pot.name": "ME Olla de Cocina",
+  "entry.applieddelight.me_cooking_pot.intro": "La $(item)ME Olla de Cocina$() es una olla de cocina de Farmer's Delight que puede acceder a una red ME para conseguir sus ingredientes.$(br2)Sigue siendo una olla de cocina: necesita una $(thing)fuente de calor$() debajo y cocina las mismas recetas a la misma velocidad.",
+  "entry.applieddelight.me_cooking_pot.craft": "Se fabrica con una olla de cocina y las piezas de una Terminal Inalámbrica.",
+  "entry.applieddelight.me_cooking_pot.link.title": "Vinculación",
+  "entry.applieddelight.me_cooking_pot.link": "Coloca la olla en la ranura de un $(thing)Punto de Acceso Inalámbrico$() para vincularla.$(br2)El vínculo solo indica $(o)a qué red$() pertenece la olla. El alcance se mide con respecto a todos los puntos de acceso de esa red, así que construir uno más cerca de la olla funciona sin más, no hace falta volver a vincularla.$(br2)El alcance y la dimensión son cosa de la red: instala $(thing)Amplificadores Inalámbricos$() en un punto de acceso para ampliar la cobertura.",
+  "entry.applieddelight.me_cooking_pot.cooking.title": "Cocción",
+  "entry.applieddelight.me_cooking_pot.cooking": "Carga los ingredientes a mano y se comporta exactamente como la olla normal.$(br2)O abre el $(thing)panel de recetas$() y haz clic en una receta: la olla saca una única ración. $(thing)Shift-clic$() saca tantas como pueda contener de una vez.$(br2)Los ingredientes salen $(o)primero de tu inventario$() y luego de la red.",
+  "entry.applieddelight.me_cooking_pot.serving.title": "Servir",
+  "entry.applieddelight.me_cooking_pot.serving": "Las comidas cocinadas se acumulan dentro de la olla, hasta $(thing)64$(), por pequeño que sea el tamaño de pila de la comida.$(br2)Solo salen cuando se proporciona el $(thing)recipiente de servir$() de la receta: coloca cuencos o botellas en la ranura de recipiente, o pulsa el botón de $(thing)petición$() para sacarlos de la red.$(br2)Rompe la olla y cualquier comida en espera viaja dentro de ella.",
+  "entry.applieddelight.me_cooking_pot.battery.title": "Batería",
+  "entry.applieddelight.me_cooking_pot.battery": "La olla lleva su propia batería, que se carga en un $(thing)Cargador de AE2$(), desde cualquier fuente de FE o mediante un $(thing)cable de energía$() conectado al lateral de una olla colocada.$(br2)Solo paga por el $(o)acceso a la red$(): los objetos que sacas de tu propio inventario son gratis, y cocinar en sí no cuesta nada. Mantener el vínculo abierto consume un pequeño goteo en reposo.$(br2)Tanto la batería como el vínculo sobreviven a romper y volver a colocar la olla."
+}

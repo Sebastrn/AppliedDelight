@@ -1,0 +1,30 @@
+{
+  "itemGroup.applieddelight": "Applied Delight",
+  "block.applieddelight.me_cooking_pot": "ME-Kochtopf",
+  "gui.applieddelight.recipes": "Rezepte",
+  "tooltip.applieddelight.unlinked": "Mit keinem Netzwerk verknüpft",
+  "tooltip.applieddelight.linked": "Mit einem Drahtlosen ME-Zugangspunkt verknüpft",
+
+  "config.jade.plugin_applieddelight.me_cooking_pot": "ME-Kochtopf",
+
+  "jei.applieddelight.me_cooking_pot.1": "Ein Farmer's-Delight-Kochtopf, der seine Zutaten aus einem ME-Netzwerk zieht. Zum Kochen braucht er weiterhin eine Hitzequelle darunter.",
+  "jei.applieddelight.me_cooking_pot.2": "Verknüpfe ihn, indem du ihn in den Slot eines Drahtlosen ME-Zugangspunkts legst. Wähle ein Rezept aus der Rezeptübersicht, und der Topf zieht alles Nötige, zuerst aus deinem Inventar, dann aus dem Netzwerk.",
+  "jei.applieddelight.me_cooking_pot.3": "Gerichte bleiben im Topf, bis du ihm Serviergefäße gibst, von Hand oder über den Anforderungsknopf. Nur aus dem Netzwerk gezogene Gegenstände kosten Batterie. Lade die Batterie in einem AE2-Ladegerät, aus jeder FE-Quelle oder mit einem Energiekabel an der Seite eines platzierten Topfes.",
+
+  "book.applieddelight.guide.name": "Applied Delight",
+  "book.applieddelight.guide.landing": "Farmer's-Delight-Kochen, verdrahtet mit einem ME-Netzwerk. $(br2)Alles, was der normale Kochtopf kann, plus Zutaten auf Abruf aus dem Speicher.",
+  "category.applieddelight.main.name": "Applied Delight",
+  "category.applieddelight.main.description": "Der ME-Kochtopf: Verknüpfen, Kochen und Servieren.",
+
+  "entry.applieddelight.me_cooking_pot.name": "ME-Kochtopf",
+  "entry.applieddelight.me_cooking_pot.intro": "Der $(item)ME-Kochtopf$() ist ein Farmer's-Delight-Kochtopf, der für seine Zutaten in ein ME-Netzwerk greifen kann.$(br2)Er ist weiterhin ein Kochtopf: Er braucht eine $(thing)Hitzequelle$() darunter und kocht dieselben Rezepte genauso schnell.",
+  "entry.applieddelight.me_cooking_pot.craft": "Hergestellt aus einem Kochtopf und den Teilen einer Drahtlosen Zugangskonsole.",
+  "entry.applieddelight.me_cooking_pot.link.title": "Verknüpfen",
+  "entry.applieddelight.me_cooking_pot.link": "Lege den Topf in den Slot eines $(thing)Drahtlosen ME-Zugangspunkts$(), um ihn zu verknüpfen.$(br2)Die Verknüpfung legt nur fest, $(o)zu welchem Netzwerk$() der Topf gehört. Die Reichweite wird an jedem Zugangspunkt dieses Netzwerks gemessen, ein näher am Topf gebauter funktioniert also einfach, ohne erneutes Verknüpfen.$(br2)Reichweite und Dimension sind Sache des Netzwerks: Baue $(thing)Drahtlosverstärker$() in einen Zugangspunkt ein, um die Abdeckung zu erweitern.",
+  "entry.applieddelight.me_cooking_pot.cooking.title": "Kochen",
+  "entry.applieddelight.me_cooking_pot.cooking": "Lege Zutaten von Hand ein, und er verhält sich genau wie der normale Kochtopf.$(br2)Oder öffne die $(thing)Rezeptübersicht$() und klicke ein Rezept an: Der Topf zieht eine einzelne Portion. $(thing)Shift-Klick$() zieht so viele, wie er auf einmal fassen kann.$(br2)Zutaten kommen $(o)zuerst aus deinem Inventar$(), dann aus dem Netzwerk.",
+  "entry.applieddelight.me_cooking_pot.serving.title": "Servieren",
+  "entry.applieddelight.me_cooking_pot.serving": "Fertige Gerichte sammeln sich im Topf, bis zu $(thing)64$(), egal wie klein die Stapelgröße des Gerichts ist.$(br2)Sie kommen erst heraus, wenn das $(thing)Serviergefäß$() des Rezepts bereitliegt: Lege Schüsseln oder Flaschen in den Behälter-Slot oder drücke den $(thing)Anfordern$()-Knopf, um sie aus dem Netzwerk zu ziehen.$(br2)Zerschlägst du den Topf, wandert jedes wartende Gericht in ihm mit.",
+  "entry.applieddelight.me_cooking_pot.battery.title": "Batterie",
+  "entry.applieddelight.me_cooking_pot.battery": "Der Topf trägt seine eigene Batterie, aufgeladen in einem $(thing)AE2-Ladegerät$(), aus jeder FE-Quelle oder über ein $(thing)Energiekabel$() an der Seite eines platzierten Topfes.$(br2)Sie bezahlt $(o)nur den Netzwerkzugang$(): Gegenstände aus deinem eigenen Inventar sind kostenlos, und das Kochen selbst kostet nichts. Die offene Verknüpfung verbraucht einen kleinen Ruhestrom.$(br2)Batterie und Verknüpfung überstehen beide das Abbauen und erneute Platzieren des Topfes."
+}

@@ -1,0 +1,30 @@
+{
+  "itemGroup.applieddelight": "Applied Delight",
+  "block.applieddelight.me_cooking_pot": "Marmite ME",
+  "gui.applieddelight.recipes": "Recettes",
+  "tooltip.applieddelight.unlinked": "Non liée à un réseau",
+  "tooltip.applieddelight.linked": "Liée à un Point d'accès sans-fil ME",
+
+  "config.jade.plugin_applieddelight.me_cooking_pot": "Marmite ME",
+
+  "jei.applieddelight.me_cooking_pot.1": "Une marmite de Farmer's Delight qui puise ses ingrédients dans un réseau ME. Elle a toujours besoin d'une source de chaleur en dessous pour cuisiner.",
+  "jei.applieddelight.me_cooking_pot.2": "Liez-la en la plaçant dans l'emplacement d'un Point d'accès sans-fil ME. Choisissez une recette dans le panneau et la marmite puise tout ce dont elle a besoin, d'abord dans votre inventaire, puis dans le réseau.",
+  "jei.applieddelight.me_cooking_pot.3": "Les plats restent dans la marmite jusqu'à ce que vous lui fournissiez des récipients de service, à la main ou avec le bouton de demande. Seuls les objets tirés du réseau consomment de la batterie. Rechargez la batterie dans un Chargeur AE2, depuis n'importe quelle source FE, ou avec un câble d'énergie contre le côté d'une marmite placée.",
+
+  "book.applieddelight.guide.name": "Applied Delight",
+  "book.applieddelight.guide.landing": "La cuisine Farmer's Delight, reliée à un réseau ME. $(br2)Tout ce que fait la marmite classique, plus les ingrédients à la demande depuis le stockage.",
+  "category.applieddelight.main.name": "Applied Delight",
+  "category.applieddelight.main.description": "La Marmite ME : liaison, cuisson et service.",
+
+  "entry.applieddelight.me_cooking_pot.name": "Marmite ME",
+  "entry.applieddelight.me_cooking_pot.intro": "La $(item)Marmite ME$() est une marmite de Farmer's Delight qui peut puiser ses ingrédients dans un réseau ME.$(br2)Elle reste une marmite : il lui faut une $(thing)source de chaleur$() en dessous, et elle cuisine les mêmes recettes à la même vitesse.",
+  "entry.applieddelight.me_cooking_pot.craft": "Fabriquée à partir d'une marmite et des pièces d'un Terminal sans-fil.",
+  "entry.applieddelight.me_cooking_pot.link.title": "La lier",
+  "entry.applieddelight.me_cooking_pot.link": "Placez la marmite dans l'emplacement d'un $(thing)Point d'accès sans-fil ME$() pour la lier.$(br2)La liaison indique seulement $(o)à quel réseau$() appartient la marmite. La portée est évaluée par rapport à chaque point d'accès de ce réseau, en construire un plus près de la marmite fonctionne donc directement, sans nouvelle liaison.$(br2)La portée et la dimension sont l'affaire du réseau : installez des $(thing)Boosteurs de signal$() dans un point d'accès pour étendre la couverture.",
+  "entry.applieddelight.me_cooking_pot.cooking.title": "Cuisson",
+  "entry.applieddelight.me_cooking_pot.cooking": "Chargez les ingrédients à la main et elle se comporte exactement comme la marmite classique.$(br2)Ou ouvrez le $(thing)panneau de recettes$() et cliquez sur une recette : la marmite puise une seule portion. Le $(thing)Maj-clic$() en puise autant qu'elle peut en contenir à la fois.$(br2)Les ingrédients viennent $(o)d'abord de votre inventaire$(), puis du réseau.",
+  "entry.applieddelight.me_cooking_pot.serving.title": "Service",
+  "entry.applieddelight.me_cooking_pot.serving": "Les plats cuisinés s'accumulent dans la marmite, jusqu'à $(thing)64$(), aussi petite que soit la taille de pile du plat.$(br2)Ils ne sortent que lorsque le $(thing)récipient de service$() de la recette est fourni : placez des bols ou des bouteilles dans l'emplacement de récipient, ou appuyez sur le bouton de $(thing)demande$() pour les tirer du réseau.$(br2)Cassez la marmite et tout plat en attente voyage à l'intérieur.",
+  "entry.applieddelight.me_cooking_pot.battery.title": "Batterie",
+  "entry.applieddelight.me_cooking_pot.battery": "La marmite porte sa propre batterie, rechargée dans un $(thing)Chargeur AE2$(), depuis n'importe quelle source FE, ou par un $(thing)câble d'énergie$() branché sur le côté d'une marmite placée.$(br2)Elle paie $(o)uniquement l'accès au réseau$() : les objets pris dans votre propre inventaire sont gratuits, et cuisiner en soi ne coûte rien. Maintenir la liaison ouverte consomme un léger courant de veille.$(br2)La batterie et la liaison survivent toutes deux au fait de casser et replacer la marmite."
+}

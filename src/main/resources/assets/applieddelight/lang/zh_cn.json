@@ -1,0 +1,30 @@
+{
+  "itemGroup.applieddelight": "Applied Delight",
+  "block.applieddelight.me_cooking_pot": "ME厨锅",
+  "gui.applieddelight.recipes": "配方",
+  "tooltip.applieddelight.unlinked": "未绑定到网络",
+  "tooltip.applieddelight.linked": "已绑定到无线访问点",
+
+  "config.jade.plugin_applieddelight.me_cooking_pot": "ME厨锅",
+
+  "jei.applieddelight.me_cooking_pot.1": "一个从ME网络中抽取食材的Farmer's Delight厨锅。它仍然需要下方有热源才能烹饪。",
+  "jei.applieddelight.me_cooking_pot.2": "将它放入无线访问点的槽位即可绑定。从面板中选择一个配方，锅便会抽取所需的一切，先从你的物品栏取用，再从网络获取。",
+  "jei.applieddelight.me_cooking_pot.3": "餐点会一直留在锅中，直到你为它提供盛装容器，可手动放入或使用请求按钮。只有从网络中抽取的物品才会消耗电池。可在AE2充能器中、通过任意FE来源，或用能量线缆贴着已放置的锅的侧面为电池充能。",
+
+  "book.applieddelight.guide.name": "Applied Delight指南",
+  "book.applieddelight.guide.landing": "将Farmer's Delight烹饪接入ME网络。$(br2)原版厨锅能做的一切它都能做，还能随时从存储中取用食材。",
+  "category.applieddelight.main.name": "Applied Delight",
+  "category.applieddelight.main.description": "ME厨锅：绑定、烹饪与取用。",
+
+  "entry.applieddelight.me_cooking_pot.name": "ME厨锅",
+  "entry.applieddelight.me_cooking_pot.intro": "$(item)ME厨锅$()是一种能够伸入ME网络获取食材的Farmer's Delight厨锅。$(br2)它仍然是一口厨锅：下方需要$(thing)热源$()，烹饪相同的配方，速度也相同。",
+  "entry.applieddelight.me_cooking_pot.craft": "由一口厨锅和无线终端的部件制成。",
+  "entry.applieddelight.me_cooking_pot.link.title": "绑定",
+  "entry.applieddelight.me_cooking_pot.link": "将锅放入$(thing)无线访问点$()的槽位即可绑定。$(br2)绑定只表明锅属于$(o)哪个网络$()。是否可达是根据该网络上的每一个访问点来判定的，因此在离锅更近的地方再建一个访问点便能直接生效，无需重新绑定。$(br2)范围和维度由网络负责：在访问点中安装$(thing)无线信号增幅器$()即可扩大覆盖范围。",
+  "entry.applieddelight.me_cooking_pot.cooking.title": "烹饪",
+  "entry.applieddelight.me_cooking_pot.cooking": "手动放入食材，它的表现与原版厨锅完全一致。$(br2)或者打开$(thing)配方面板$()并点击一个配方：锅会抽取一份的量。$(thing)Shift+点击$()则会一次抽取它所能容纳的最大数量。$(br2)食材$(o)优先取自你的物品栏$()，然后才是网络。",
+  "entry.applieddelight.me_cooking_pot.serving.title": "取用",
+  "entry.applieddelight.me_cooking_pot.serving": "烹饪好的餐点会积存在锅内，最多$(thing)64$()份，无论该餐点自身的堆叠上限有多小。$(br2)只有在提供了配方所需的$(thing)盛装容器$()后，它们才会取出：将碗或瓶放入容器槽，或按下$(thing)请求$()按钮从网络中抽取。$(br2)破坏锅时，任何等待中的餐点都会随之一同带走。",
+  "entry.applieddelight.me_cooking_pot.battery.title": "电池",
+  "entry.applieddelight.me_cooking_pot.battery": "锅自带电池，可在$(thing)AE2充能器$()中、通过任意FE来源，或用接入已放置的锅侧面的$(thing)能量线缆$()来充能。$(br2)它$(o)只为网络访问付费$()：从你自己物品栏中取用的物品是免费的，烹饪本身也不耗费任何电力。保持绑定连接会产生少量的空闲耗电。$(br2)破坏并重新放置锅后，电池和绑定都会保留。"
+}
