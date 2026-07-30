@@ -1,6 +1,7 @@
 package sebastrn.applieddelight.blockentity;
 
 import appeng.api.config.Actionable;
+import appeng.api.config.PowerUnit;
 import appeng.api.implementations.blockentities.IWirelessAccessPoint;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.security.IActionSource;
@@ -46,6 +47,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.items.ItemStackHandler;
@@ -122,6 +124,55 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
 
     /** Battery, in AE units. Carried in/out via the item on place/break; drained when pulling from the network. */
     private double energy;
+
+    /**
+     * Forge-Energy view of the pot's battery for a <em>placed</em> pot, so cables (Mekanism, Flux, any FE source) can
+     * charge it in the world — the block-level counterpart of the item's AE2 {@code PoweredItemCapabilities} bridge, and
+     * mirroring it exactly: incoming FE is converted to AE and reported back in FE via AE2's own {@link PowerUnit}, so
+     * cable-charging behaves like charging the item in an AE2 or FE charger. Receive-only: a cable tops the battery up
+     * but can never siphon it back out. Registered against
+     * {@link net.neoforged.neoforge.capabilities.Capabilities.EnergyStorage#BLOCK} in {@link AppliedDelight}. Exposing it
+     * is also what makes cables visually connect to the block.
+     */
+    private final IEnergyStorage energyStorage = new IEnergyStorage() {
+        @Override
+        public int receiveEnergy(int maxReceive, boolean simulate) {
+            double offeredAE = PowerUnit.FE.convertTo(PowerUnit.AE, maxReceive);
+            double room = Math.max(0.0, getMaxEnergy() - energy);
+            double acceptedAE = Math.min(offeredAE, room);
+            double overflowAE = offeredAE - acceptedAE;
+            if (!simulate && acceptedAE > 0) {
+                energy += acceptedAE;
+                setChanged();
+            }
+            return maxReceive - (int) PowerUnit.AE.convertTo(PowerUnit.FE, overflowAE);
+        }
+
+        @Override
+        public int extractEnergy(int maxExtract, boolean simulate) {
+            return 0;
+        }
+
+        @Override
+        public int getEnergyStored() {
+            return (int) Math.min(Integer.MAX_VALUE, PowerUnit.AE.convertTo(PowerUnit.FE, energy));
+        }
+
+        @Override
+        public int getMaxEnergyStored() {
+            return (int) Math.min(Integer.MAX_VALUE, PowerUnit.AE.convertTo(PowerUnit.FE, getMaxEnergy()));
+        }
+
+        @Override
+        public boolean canExtract() {
+            return false;
+        }
+
+        @Override
+        public boolean canReceive() {
+            return true;
+        }
+    };
 
     // --- Network link state (mirrors Applied Cooking's KitchenStationBlockEntity) ---
     @Nullable
@@ -224,6 +275,11 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
 
     public double getMaxEnergy() {
         return cfg().getBatteryCapacity();
+    }
+
+    /** Receive-only Forge-Energy view of the battery, exposed to cables on a placed pot. See {@link #energyStorage}. */
+    public IEnergyStorage getEnergyStorage() {
+        return energyStorage;
     }
 
     private int energyPercent() {

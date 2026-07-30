@@ -9,7 +9,7 @@
 
   "jei.applieddelight.me_cooking_pot.1": "A Farmer's Delight cooking pot that draws its ingredients from an ME network. It still needs a heat source beneath it to cook.",
   "jei.applieddelight.me_cooking_pot.2": "Link it by placing it in a Wireless Access Point's slot. Pick a recipe from the panel and the pot pulls everything it needs — from your inventory first, then the network.",
-  "jei.applieddelight.me_cooking_pot.3": "Meals stay in the pot until you give it serving containers, by hand or with the request button. Only items pulled from the network cost battery.",
+  "jei.applieddelight.me_cooking_pot.3": "Meals stay in the pot until you give it serving containers, by hand or with the request button. Only items pulled from the network cost battery. Charge the battery in an AE2 Charger, from any FE source, or with an energy cable against a placed pot's side.",
 
   "book.applieddelight.guide.name": "Applied Delight",
   "book.applieddelight.guide.landing": "Farmer's Delight cooking, wired into an ME network. $(br2)Everything the vanilla cooking pot does, plus ingredients on tap from storage.",
@@ -26,5 +26,5 @@
   "entry.applieddelight.me_cooking_pot.serving.title": "Serving",
   "entry.applieddelight.me_cooking_pot.serving": "Cooked meals collect inside the pot — up to $(thing)64$(), however small the meal's own stack size.$(br2)They only come out when the recipe's $(thing)serving container$() is provided: place bowls or bottles in the container slot, or press the $(thing)request$() button to pull them from the network.$(br2)Break the pot and any waiting meal travels inside it.",
   "entry.applieddelight.me_cooking_pot.battery.title": "Battery",
-  "entry.applieddelight.me_cooking_pot.battery": "The pot carries its own battery, charged in an $(thing)AE2 Charger$() or from any FE source.$(br2)It pays for $(o)network access only$(): items taken from your own inventory are free, and cooking itself costs nothing. Holding the link open draws a small idle trickle.$(br2)The battery and the link both survive breaking and replacing the pot."
+  "entry.applieddelight.me_cooking_pot.battery": "The pot carries its own battery, charged in an $(thing)AE2 Charger$(), from any FE source, or by an $(thing)energy cable$() run into the side of a placed pot.$(br2)It pays for $(o)network access only$(): items taken from your own inventory are free, and cooking itself costs nothing. Holding the link open draws a small idle trickle.$(br2)The battery and the link both survive breaking and replacing the pot."
 }

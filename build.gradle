@@ -164,6 +164,11 @@ dependencies {
     // CurseMaven does not resolve dependencies itself, so Architectury (on Modrinth) is added alongside it.
     runtimeOnly "curse.maven:ftb-library-forge-404465:8438216"   // FTB Library 2101.1.33 (NeoForge 1.21.1)
     runtimeOnly "maven.modrinth:architectury-api:ZxYGwlk0"       // Architectury API 13.0.8+neoforge (FTB Library dep)
+
+    // Mekanism — dev-only, to test charging a placed pot's battery from its Universal Cables (any FE cable works; this
+    // is just the one players reach for first). Base Mekanism only: all of its Modrinth dependencies are optional, so no
+    // extra jars are needed to run it here.
+    runtimeOnly "maven.modrinth:mekanism:5KzzycBT"               // Mekanism 10.7.19.85 (NeoForge 1.21.1)
 }
 
 tasks.named('processResources', ProcessResources).configure {

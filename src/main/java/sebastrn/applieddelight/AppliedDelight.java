@@ -7,6 +7,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.InterModEnqueueEvent;
 import sebastrn.applieddelight.integration.theoneprobe.TheOneProbeAddon;
+import net.minecraft.core.Direction;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import sebastrn.applieddelight.config.ServerConfig;
@@ -54,9 +55,11 @@ public final class AppliedDelight {
     }
 
     /**
-     * Expose the ME Cooking Pot item's battery as a Forge energy store so it charges in an AE2 Charger (or any FE
-     * charger), reusing AE2's own {@link PoweredItemCapabilities} bridge. The item itself implements
-     * {@link appeng.api.implementations.items.IAEItemPowerStorage}.
+     * Expose the ME Cooking Pot's battery as a Forge energy store. The ITEM cap makes the item chargeable in an AE2
+     * Charger (or any FE charger) in a player's inventory, reusing AE2's own {@link PoweredItemCapabilities} bridge (the
+     * item implements {@link appeng.api.implementations.items.IAEItemPowerStorage}). The BLOCK cap lets a placed pot be
+     * charged by energy cables (Mekanism, Flux, any FE transport) — which is also what makes those cables visually
+     * connect to it.
      */
     private void registerCapabilities(RegisterCapabilitiesEvent event) {
         MECookingPotItem potItem = ADItems.ME_COOKING_POT.get();
@@ -64,5 +67,11 @@ public final class AppliedDelight {
                 Capabilities.EnergyStorage.ITEM,
                 (stack, ctx) -> new PoweredItemCapabilities(stack, potItem),
                 potItem);
+        // Only the four horizontal faces accept a cable: a connection into the pot's top would clash with the meal
+        // spout, and its bottom sits on the heat source, so both are refused (null). A sideless query still resolves.
+        event.registerBlockEntity(
+                Capabilities.EnergyStorage.BLOCK,
+                ADBlockEntities.ME_COOKING_POT.get(),
+                (be, side) -> side == Direction.UP || side == Direction.DOWN ? null : be.getEnergyStorage());
     }
 }
