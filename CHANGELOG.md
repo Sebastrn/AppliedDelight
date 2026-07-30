@@ -2,7 +2,7 @@
 
 All notable changes to **Applied Delight** are listed here.
 
-## 1.0.3
+## 1.1.0
 
 You can now power a placed ME Cooking Pot from energy cables. Run any Forge Energy cable (Mekanism, Flux, and the like) into one of its sides and it charges the battery and keeps it topped, so a stationary pot never runs down; pick it up and it runs on the stored charge as before. The item still charges in an AE2 Charger or any FE charger too.
 
