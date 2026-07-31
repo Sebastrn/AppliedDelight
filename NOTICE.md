@@ -40,5 +40,5 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR OTHER DEALINGS IN THE SOFTWARE.
 ## Applied Energistics 2
 
 Applied Delight depends on Applied Energistics 2 at runtime and compiles against its API. **No AE2 asset is copied or
-redistributed here** — in particular none of its textures or models, which AE2 licenses separately from its code under
+redistributed here**, in particular none of its textures or models, which AE2 licenses separately from its code under
 CC BY-NC-SA 3.0. The pot's artwork is derived from Farmer's Delight (above) and from original work.

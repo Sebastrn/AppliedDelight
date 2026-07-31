@@ -16,7 +16,7 @@ import sebastrn.applieddelight.ADItems;
  *
  * <p>Deliberately no workstation registration here. Farmer's Delight ships JEI and EMI plugins but <em>no</em> REI
  * plugin, so there is no REI category for FD cooking to attach the pot to. REI users see FD's recipes through REI's
- * JEI-compatibility layer, which translates FD's JEI plugin — and ours along with it, so the catalyst arrives that way.
+ * JEI-compatibility layer, which translates FD's JEI plugin, and ours along with it, so the catalyst arrives that way.
  *
  * <p>Discovered only when REI is present (its {@code @REIPluginClient} scan never touches this class otherwise).
  */

@@ -14,7 +14,7 @@ import vectorwing.farmersdelight.integration.jei.FDRecipeTypes;
 
 /**
  * JEI integration. The important half is the <em>catalyst</em>: the ME Cooking Pot is registered against Farmer's
- * Delight's own cooking category, so every FD cooking recipe lists this pot as somewhere it can be made — without it,
+ * Delight's own cooking category, so every FD cooking recipe lists this pot as somewhere it can be made, without it,
  * players looking up a meal would never learn the pot can cook it.
  *
  * <p>Loaded only when JEI is present (its {@code @JeiPlugin} scan never touches this class otherwise), so JEI stays an

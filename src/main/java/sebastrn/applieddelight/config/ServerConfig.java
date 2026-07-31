@@ -47,7 +47,7 @@ public class ServerConfig {
 
             idleDrainPerTick = builder
                     .comment("AE drained from the pot's battery every tick while it holds a live link to the network,",
-                            "even when idle — keeping the connection open is not free. When the battery can't pay, the",
+                            "even when idle, keeping the connection open is not free. When the battery can't pay, the",
                             "pot drops offline until it is recharged. Set to 0 to make an open link free.")
                     .defineInRange("idleDrainPerTick", 1.0, 0.0, Double.MAX_VALUE);
 

@@ -92,7 +92,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
     /** Upper bound shown for a recipe's craftable count in the list. */
     public static final int MAX_CRAFT_DISPLAY = 999;
     /**
-     * How many servings the meal slot holds, regardless of the meal item's own stack size — Farmer's Delight's rule.
+     * How many servings the meal slot holds, regardless of the meal item's own stack size, Farmer's Delight's rule.
      * The meal is the pot's contents, not a stack in a box, so 64 Hot Cocoa fit even though the item stacks to 16.
      */
     public static final int MEAL_CAPACITY = 64;
@@ -127,7 +127,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
 
     /**
      * Forge-Energy view of the pot's battery for a <em>placed</em> pot, so cables (Mekanism, Flux, any FE source) can
-     * charge it in the world — the block-level counterpart of the item's AE2 {@code PoweredItemCapabilities} bridge, and
+     * charge it in the world, the block-level counterpart of the item's AE2 {@code PoweredItemCapabilities} bridge, and
      * mirroring it exactly: incoming FE is converted to AE and reported back in FE via AE2's own {@link PowerUnit}, so
      * cable-charging behaves like charging the item in an AE2 or FE charger. Receive-only: a cable tops the battery up
      * but can never siphon it back out. Registered against
@@ -177,7 +177,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
     // --- Network link state (mirrors Applied Cooking's KitchenStationBlockEntity) ---
     @Nullable
     private GlobalPos accessPointPos;
-    /** The access point the pot was linked at. Used only to find the grid — reach is judged per access point. */
+    /** The access point the pot was linked at. Used only to find the grid, reach is judged per access point. */
     @Nullable
     private IWirelessAccessPoint linkedAccessPoint;
     /** The access point currently covering this pot, chosen from the grid each refresh. Null when out of reach. */
@@ -245,7 +245,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
         return inventory;
     }
 
-    /** The meal currently accumulated in the pot (may be more than a stack — up to {@link #MEAL_CAPACITY}). */
+    /** The meal currently accumulated in the pot (may be more than a stack, up to {@link #MEAL_CAPACITY}). */
     public ItemStack getMeal() {
         return inventory.getStackInSlot(MEAL_DISPLAY_SLOT);
     }
@@ -260,7 +260,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
 
     /**
      * The pot's link state, for the status LED and HUD tooltips: 0 = no access point saved (Unlinked), 1 = linked but
-     * not currently connected — no power, out of range, or the network is down (Offline), 2 = actively connected
+     * not currently connected, no power, out of range, or the network is down (Offline), 2 = actively connected
      * (Linked). This distinguishes "I linked it but it can't reach/power the network" from "it was never linked",
      * which a plain connected/not boolean conflated.
      */
@@ -296,7 +296,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
      * Select a recipe and how many to cook. Clicking a recipe passes 1; shift-clicking passes a batch.
      *
      * <p>A target of 0 <em>clears</em> the selection rather than storing it. Shift-clicking a recipe nothing can supply
-     * computes a batch of 0, and keeping the id in that state would leave the pot armed but inert — {@code active} is
+     * computes a batch of 0, and keeping the id in that state would leave the pot armed but inert, {@code active} is
      * false, so it would silently ignore ingredients loaded into it by hand.
      */
     public void selectRecipe(@Nullable ResourceLocation id, int target) {
@@ -360,7 +360,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
 
         // Availability is tracked split by source, because the two are priced differently: items in the player's own
         // inventory are always free and reachable, while network items need a live link and cost battery. So an
-        // unlinked or flat pot still shows — and cooks — whatever the player is carrying, like a plain cooking pot.
+        // unlinked or flat pot still shows, and cooks, whatever the player is carrying, like a plain cooking pot.
         List<ItemStack> reps = new ArrayList<>();
         List<Long> netCounts = new ArrayList<>();
         List<Long> playerCounts = new ArrayList<>();
@@ -408,7 +408,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
             boolean rSelected = selectedRecipeId != null && recipes.get(r).id().equals(selectedRecipeId);
 
             // Group identical ingredients. A recipe listing cocoa beans twice consumes TWO beans per craft, so its
-            // bean pool supports total/2 crafts — taking an independent minimum per ingredient double-counts it.
+            // bean pool supports total/2 crafts, taking an independent minimum per ingredient double-counts it.
             Map<String, Integer> multiplicity = new HashMap<>();
             Map<String, Ingredient> distinct = new LinkedHashMap<>();
             for (Ingredient ingredient : ingredients) {
@@ -424,7 +424,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
                 Ingredient ingredient = entry.getValue();
                 int copies = multiplicity.get(entry.getKey());
                 // Availability is per ITEM VARIANT, never summed across them: an input slot holds one kind of item, so
-                // a batch is served by whichever single variant goes furthest — min(what we have of it / how many the
+                // a batch is served by whichever single variant goes furthest, min(what we have of it / how many the
                 // recipe needs, its own stack size).
                 long playerBest = 0;
                 long combinedBest = 0;
@@ -438,7 +438,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
                                 Math.min((netCounts.get(i) + free) / copies, cap));
                     }
                 }
-                // A network fluid can serve this ingredient too (conjured bucket, so one per batch) — network only.
+                // A network fluid can serve this ingredient too (conjured bucket, so one per batch), network only.
                 if (fluidBucketsFor(ingredient, networkFluids) >= copies) {
                     combinedBest = Math.max(combinedBest, 1);
                 }
@@ -505,7 +505,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
 
     /**
      * How many more servings will fit in the meal slot. The pot holds up to {@link #MEAL_CAPACITY} meals regardless of
-     * the meal item's own stack size (Farmer's Delight's rule — it's the pot's contents, not a stack in a box), so a
+     * the meal item's own stack size (Farmer's Delight's rule, it's the pot's contents, not a stack in a box), so a
      * pot can hold 64 Hot Cocoa even though the item stacks to 16.
      *
      * <p>The output slot is deliberately NOT part of this: meals only reach it when the player supplies containers, so
@@ -517,7 +517,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
         if (result.isEmpty()) return 0;
         ItemStack stored = inventory.getStackInSlot(MEAL_DISPLAY_SLOT);
         // A meal of a different kind blocks cooking until it is served out, but it does not shrink the room this
-        // recipe will eventually have — the batch simply waits.
+        // recipe will eventually have, the batch simply waits.
         int used = ItemStack.isSameItem(stored, result) ? stored.getCount() : 0;
         return Math.max(0, MEAL_CAPACITY - used) / Math.max(1, result.getCount());
     }
@@ -562,7 +562,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
         boolean heated = isHeated(level, worldPosition);
         boolean changed = false;
 
-        // Drop a standing order the moment its ingredients no longer match — the player pulled or swapped items out of
+        // Drop a standing order the moment its ingredients no longer match, the player pulled or swapped items out of
         // the slots, so revert to plain cooking-pot behaviour (cook whatever is actually there) instead of latching on
         // the stale order. This never fires during normal cooking, nor while a full batch waits for meal-slot room, nor
         // while an unheated pot waits for heat: in all of those the loaded ingredients still match the selected recipe.
@@ -602,7 +602,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
         }
 
         // Serving is exactly Farmer's Delight's: a meal needing no container moves out on its own, otherwise it waits
-        // for containers the PLAYER supplies — by hand or via the request button. The pot never fetches them itself.
+        // for containers the PLAYER supplies, by hand or via the request button. The pot never fetches them itself.
         ItemStack meal = inventory.getStackInSlot(MEAL_DISPLAY_SLOT);
         if (!meal.isEmpty()) {
             if (!mealHasContainer(meal)) {
@@ -648,7 +648,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
      *
      * <p>Per ingredient we first choose the <em>item variant</em> that stacks highest among those actually obtainable
      * (milk bottle over milk bucket, since the batch has to fit in one slot), then fill it player-inventory-first and
-     * network-second. Only the network-sourced part costs battery. Duplicated ingredients get their own slot each —
+     * network-second. Only the network-sourced part costs battery. Duplicated ingredients get their own slot each, 
      * Farmer's Delight's matcher requires the number of occupied slots to equal the ingredient count, so merging two
      * cocoa entries into one slot would stop the recipe matching.
      *
@@ -678,7 +678,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
             Ingredient ingredient = ingredients.get(n);
 
             // Pick the variant that goes furthest: min(how many we can get, how many fit in the slot). Stack size
-            // alone is not enough — 1 milk bottle beats nothing, but 8 milk buckets beat 1 milk bottle.
+            // alone is not enough, 1 milk bottle beats nothing, but 8 milk buckets beat 1 milk bottle.
             ItemStack best = ItemStack.EMPTY;
             long bestScore = 0;
             int bestPlayer = 0;
@@ -733,7 +733,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
                 continue;
             }
 
-            // No item variant anywhere — fall back to network fluid, conjuring a bucket. Buckets do not stack, so a
+            // No item variant anywhere, fall back to network fluid, conjuring a bucket. Buckets do not stack, so a
             // fluid-sourced ingredient pins the whole batch to a single craft.
             boolean found = false;
             if (networkUsable) {
@@ -752,13 +752,13 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
                     }
                 }
             }
-            if (!found) return 0; // an ingredient is unavailable from every source — take nothing
+            if (!found) return 0; // an ingredient is unavailable from every source, take nothing
         }
 
         if (batch <= 0) return 0;
 
         // Containers are deliberately NOT fetched here. Like Farmer's Delight, meals stay in the pot until the player
-        // supplies containers — by hand, or with the "request containers" button.
+        // supplies containers, by hand, or with the "request containers" button.
         // Battery: only the network-sourced portion is charged for.
         int networkItems = 0;
         for (int n = 0; n < count; n++) {
@@ -809,7 +809,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
             inventory.setStackInSlot(n, got > 0 ? variant.copyWithCount(got) : ItemStack.EMPTY);
         }
 
-        // Remember what this meal will need to be served into, so the request button knows what to ask for — but ONLY
+        // Remember what this meal will need to be served into, so the request button knows what to ask for, but ONLY
         // when the meal slot is not already holding a DIFFERENT meal. That waiting meal still needs its OWN container
         // (hot cocoa wants a glass bottle even if you have just ordered a bowl recipe); overwriting this would make the
         // request button fetch the wrong container, and would let that wrong container serve the waiting meal. Once the
@@ -828,7 +828,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
      * existing input slots. This is what makes re-clicking the recipe that is already cooking "top the pot up" the way
      * the Farmer's Delight cooking pot does, instead of returning the batch and starting over.
      *
-     * <p>Each occupied input slot keeps the exact item variant already in it — a slot holds one kind of item, so milk
+     * <p>Each occupied input slot keeps the exact item variant already in it, a slot holds one kind of item, so milk
      * bottles cannot be topped up with milk buckets. Sourcing is player-inventory-first, network-second, and only the
      * network part costs battery. The amount added is the smallest of: the room left in each occupied slot, the
      * meal-slot room left once the meals the current batch will still produce are counted, how much of each ingredient
@@ -862,7 +862,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
         if (cap <= 0) return 0;
 
         // (3) Availability of the exact items already loaded. An ingredient listed twice occupies two slots, so it
-        //     needs `copies` per set — count player + network stock of each distinct item and divide.
+        //     needs `copies` per set, count player + network stock of each distinct item and divide.
         boolean networkUsable = meStorage != null && accessPoint != null && isConnected();
         NonNullList<ItemStack> playerItems = craftingPlayer == null ? null : craftingPlayer.getInventory().items;
         KeyCounter snapshot = new KeyCounter();
@@ -904,7 +904,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
 
         // (4) Battery pays only for the network portion, and the player's stock is spent first. The network draw is not
         //     linear in the batch size (the player covers the first sets for free), so find the largest feasible size
-        //     by stepping down — the counts here are tiny (<= 64 sets, <= 6 ingredients).
+        //     by stepping down, the counts here are tiny (<= 64 sets, <= 6 ingredients).
         double drain = cfg().getDrainPerIngredient();
         if (networkUsable && drain > 0) {
             int feasible = 0;
@@ -956,7 +956,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
     }
 
     /**
-     * Request serving containers from the network for the meal currently in the pot — the player's explicit action,
+     * Request serving containers from the network for the meal currently in the pot, the player's explicit action,
      * never automatic. Tops the container slot up to whatever is actually needed: the fewest of the container's stack
      * size, the number of meals waiting, and what the network holds.
      *
@@ -1000,7 +1000,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
     }
 
     /**
-     * True when the ingredient and container slots are clear — the precondition for loading a batch. A waiting meal or
+     * True when the ingredient and container slots are clear, the precondition for loading a batch. A waiting meal or
      * a finished serving in the output does NOT block a new order; the batch simply sits until the meal is served out.
      */
     public boolean canAcceptBatch() {
@@ -1011,7 +1011,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
     }
 
     /**
-     * The "send to network" button: push everything — ingredients, containers <em>and</em> the finished output — back
+     * The "send to network" button: push everything, ingredients, containers <em>and</em> the finished output, back
      * out, network first (the pot is a network device and the player can pull it all straight back out). The meal slot
      * is deliberately untouched: a meal has not paid for its container yet, so releasing it as items would hand out
      * free servings.
@@ -1028,10 +1028,10 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
     }
 
     /**
-     * Clear the ingredients and serving containers back out before a recipe switch, leaving the output alone — the
+     * Clear the ingredients and serving containers back out before a recipe switch, leaving the output alone, the
      * player's finished servings stay theirs. Items go to the <em>network first</em>, matching the send-to-network
      * button: the pot is a storage device, the ingredients came from the network, and a shift-clicked batch can easily
-     * be more than a player's inventory can absorb — sending it at the player first would litter the floor. Your
+     * be more than a player's inventory can absorb, sending it at the player first would litter the floor. Your
      * inventory is the fallback when the network is unreachable (so an unlinked pot still hands everything back), and
      * the floor is the last resort, so nothing is ever destroyed.
      */
@@ -1076,7 +1076,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
 
     /**
      * Empty a slot holding a bucket conjured from network fluid, putting the FLUID back into the network. The bucket
-     * itself is never dropped or inserted — it was never a real item, and minting one would hand out a free container —
+     * itself is never dropped or inserted, it was never a real item, and minting one would hand out a free container, 
      * but the fluid it stands for was genuinely extracted, so destroying it would lose the player's milk/water.
      *
      * <p>If the network is unreachable the fluid is lost: dropping a filled bucket instead would mint exactly the
@@ -1116,14 +1116,14 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
         if (level == null || !hasInput()) return false;
         // The inputs must actually make this recipe. A selected recipe is resolved by id, not by matching the slots,
         // so without this the pot would keep cooking a "ghost" of the selected recipe as long as any one input slot
-        // stayed occupied — producing a full meal even after ingredients were pulled out. Farmer's Delight gets this
+        // stayed occupied, producing a full meal even after ingredients were pulled out. Farmer's Delight gets this
         // for free by re-fetching a matching recipe every tick; we check the selected one directly.
         if (!recipe.matches(new RecipeWrapper(inventory), level)) return false;
         ItemStack result = recipe.assemble(new RecipeWrapper(inventory), level.registryAccess());
         if (result.isEmpty()) return false;
         ItemStack stored = inventory.getStackInSlot(MEAL_DISPLAY_SLOT);
         if (stored.isEmpty()) return true;
-        // A meal of a different kind blocks cooking until it is served out — the loaded ingredients simply wait.
+        // A meal of a different kind blocks cooking until it is served out, the loaded ingredients simply wait.
         if (!ItemStack.isSameItem(stored, result)) return false;
         return stored.getCount() + result.getCount() <= Math.max(MEAL_CAPACITY, stored.getMaxStackSize());
     }
@@ -1184,8 +1184,8 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
     }
 
     /**
-     * Drop a crafting remainder the way Farmer's Delight does — nudged out the pot's left side at a fixed position and
-     * velocity — so a batch's remainders land together in one spot instead of scattering. Mirrors
+     * Drop a crafting remainder the way Farmer's Delight does, nudged out the pot's left side at a fixed position and
+     * velocity, so a batch's remainders land together in one spot instead of scattering. Mirrors
      * {@code CookingPotBlockEntity#ejectIngredientRemainder}, using our own {@code FACING} property.
      */
     private void ejectIngredientRemainder(ItemStack remainderStack) {
@@ -1275,7 +1275,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
 
         if (linkedAccessPoint == null || energy <= 0) return;
 
-        // The link only identifies which NETWORK the pot belongs to — exactly how AE2's wireless terminal treats it.
+        // The link only identifies which NETWORK the pot belongs to, exactly how AE2's wireless terminal treats it.
         // Reach is then judged against every access point on that grid, so building a nearer access point just works
         // without re-linking the pot.
         IGrid liveGrid = linkedAccessPoint.getGrid();
@@ -1299,13 +1299,13 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
     }
 
     /**
-     * Pick an access point on {@code grid} that covers this pot, mirroring how AE2's wireless terminal chooses one —
+     * Pick an access point on {@code grid} that covers this pot, mirroring how AE2's wireless terminal chooses one, 
      * except measured from the pot instead of from a player. Reach is entirely the network's business: an access
      * point's own {@link IWirelessAccessPoint#getRange()} already includes any Wireless Boosters installed in it, so
      * upgrading the access point is how a player extends coverage. There are deliberately no config knobs.
      *
      * <p>This is written out rather than delegated because AE2's own check
-     * ({@code WirelessTerminalMenuHost#getAccessPointSignal}) is protected and measured from {@code getPlayer()} — a
+     * ({@code WirelessTerminalMenuHost#getAccessPointSignal}) is protected and measured from {@code getPlayer()}, a
      * placed block has no API to hand the question to, and no mixin would help, since our block never runs that code.
      *
      * @return the nearest covering access point, or null if none reaches this pot.
@@ -1314,7 +1314,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
     private IWirelessAccessPoint selectReachableAccessPoint(IGrid grid) {
         if (level == null) return null;
 
-        // AEInfinityBooster's cards work from ANY access point on the network, not just the linked one — that is how
+        // AEInfinityBooster's cards work from ANY access point on the network, not just the linked one, that is how
         // their own mixin reads them, so we match it. Detected softly by item id; no dependency on the mod.
         BoosterCard card = detectBoosterCard(grid);
 
@@ -1348,7 +1348,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
     }
 
     /**
-     * Softly detect an AEInfinityBooster card in <em>any</em> access point on the grid (no hard dependency — the cards
+     * Softly detect an AEInfinityBooster card in <em>any</em> access point on the grid (no hard dependency, the cards
      * are matched by item id). Scanning the whole grid rather than just the linked access point is what
      * AEInfinityBooster's own mixin does, so a card placed in a different access point still counts.
      */
@@ -1377,7 +1377,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
         energy = MECookingPotItem.getStoredEnergy(stack);
         if (level != null) {
             // A meal broken with the pot rides inside the item and comes back when it is placed, exactly as in
-            // Farmer's Delight — it never dropped as a loose item, because it has not paid for its container.
+            // Farmer's Delight, it never dropped as a loose item, because it has not paid for its container.
             ItemStack meal = MECookingPotItem.getStoredMeal(stack, level.registryAccess());
             if (!meal.isEmpty()) {
                 inventory.setStackInSlot(MEAL_DISPLAY_SLOT, meal);
@@ -1426,7 +1426,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
             if (i == MEAL_DISPLAY_SLOT) {
                 continue;
             }
-            // A bucket conjured from a network fluid isn't a real item — never drop it, but put its FLUID back into
+            // A bucket conjured from a network fluid isn't a real item, never drop it, but put its FLUID back into
             // the network rather than destroying it along with the pot.
             if (i < INPUT_SLOTS && fluidSourced[i]) {
                 returnFluidSourcedSlot(i);

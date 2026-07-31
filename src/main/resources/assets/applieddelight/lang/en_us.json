@@ -8,7 +8,7 @@
   "config.jade.plugin_applieddelight.me_cooking_pot": "ME Cooking Pot",
 
   "jei.applieddelight.me_cooking_pot.1": "A Farmer's Delight cooking pot that draws its ingredients from an ME network. It still needs a heat source beneath it to cook.",
-  "jei.applieddelight.me_cooking_pot.2": "Link it by placing it in a Wireless Access Point's slot. Pick a recipe from the panel and the pot pulls everything it needs — from your inventory first, then the network.",
+  "jei.applieddelight.me_cooking_pot.2": "Link it by placing it in a Wireless Access Point's slot. Pick a recipe from the panel and the pot pulls everything it needs, from your inventory first, then the network.",
   "jei.applieddelight.me_cooking_pot.3": "Meals stay in the pot until you give it serving containers, by hand or with the request button. Only items pulled from the network cost battery. Charge the battery in an AE2 Charger, from any FE source, or with an energy cable against a placed pot's side.",
 
   "book.applieddelight.guide.name": "Applied Delight",
@@ -20,11 +20,11 @@
   "entry.applieddelight.me_cooking_pot.intro": "The $(item)ME Cooking Pot$() is a Farmer's Delight cooking pot that can reach into an ME network for its ingredients.$(br2)It is still a cooking pot: it needs a $(thing)heat source$() beneath it, and it cooks the same recipes at the same speed.",
   "entry.applieddelight.me_cooking_pot.craft": "Crafted from a cooking pot and the parts of a Wireless Terminal.",
   "entry.applieddelight.me_cooking_pot.link.title": "Linking",
-  "entry.applieddelight.me_cooking_pot.link": "Place the pot into the slot of a $(thing)Wireless Access Point$() to link it.$(br2)The link only says $(o)which network$() the pot belongs to. Reach is judged against every access point on that network, so building one nearer the pot just works — no need to link again.$(br2)Range and dimension are the network's business: install $(thing)Wireless Boosters$() in an access point to extend coverage.",
+  "entry.applieddelight.me_cooking_pot.link": "Place the pot into the slot of a $(thing)Wireless Access Point$() to link it.$(br2)The link only says $(o)which network$() the pot belongs to. Reach is judged against every access point on that network, so building one nearer the pot just works, no need to link again.$(br2)Range and dimension are the network's business: install $(thing)Wireless Boosters$() in an access point to extend coverage.",
   "entry.applieddelight.me_cooking_pot.cooking.title": "Cooking",
   "entry.applieddelight.me_cooking_pot.cooking": "Load ingredients by hand and it behaves exactly like the vanilla pot.$(br2)Or open the $(thing)recipe panel$() and click a recipe: the pot pulls a single serving. $(thing)Shift-click$() pulls as many as it can hold at once.$(br2)Ingredients come from $(o)your inventory first$(), then the network.",
   "entry.applieddelight.me_cooking_pot.serving.title": "Serving",
-  "entry.applieddelight.me_cooking_pot.serving": "Cooked meals collect inside the pot — up to $(thing)64$(), however small the meal's own stack size.$(br2)They only come out when the recipe's $(thing)serving container$() is provided: place bowls or bottles in the container slot, or press the $(thing)request$() button to pull them from the network.$(br2)Break the pot and any waiting meal travels inside it.",
+  "entry.applieddelight.me_cooking_pot.serving": "Cooked meals collect inside the pot, up to $(thing)64$(), however small the meal's own stack size.$(br2)They only come out when the recipe's $(thing)serving container$() is provided: place bowls or bottles in the container slot, or press the $(thing)request$() button to pull them from the network.$(br2)Break the pot and any waiting meal travels inside it.",
   "entry.applieddelight.me_cooking_pot.battery.title": "Battery",
   "entry.applieddelight.me_cooking_pot.battery": "The pot carries its own battery, charged in an $(thing)AE2 Charger$(), from any FE source, or by an $(thing)energy cable$() run into the side of a placed pot.$(br2)It pays for $(o)network access only$(): items taken from your own inventory are free, and cooking itself costs nothing. Holding the link open draws a small idle trickle.$(br2)The battery and the link both survive breaking and replacing the pot."
 }

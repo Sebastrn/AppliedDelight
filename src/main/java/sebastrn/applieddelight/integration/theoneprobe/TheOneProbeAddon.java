@@ -26,7 +26,7 @@ import java.util.function.Function;
  */
 public class TheOneProbeAddon {
 
-    /** TOP's mod id — used for the {@code ModList} guard before this class is touched at all. */
+    /** TOP's mod id, used for the {@code ModList} guard before this class is touched at all. */
     public static final String MOD_ID = "theoneprobe";
 
     private TheOneProbeAddon() {

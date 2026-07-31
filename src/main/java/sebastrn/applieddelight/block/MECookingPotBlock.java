@@ -43,7 +43,7 @@ import vectorwing.farmersdelight.common.tag.ModTags;
 
 /**
  * A Farmer's-Delight-style cooking pot that draws its ingredients from a linked ME network. It is a plain
- * {@link BaseEntityBlock} — it does not extend Farmer's Delight, it only mirrors its shape and heat behaviour.
+ * {@link BaseEntityBlock}, it does not extend Farmer's Delight, it only mirrors its shape and heat behaviour.
  */
 public class MECookingPotBlock extends BaseEntityBlock {
 
@@ -53,7 +53,7 @@ public class MECookingPotBlock extends BaseEntityBlock {
     /** True while linked to an active, in-range, powered network. Drives the block model. */
     public static final BooleanProperty CONNECTED = BooleanProperty.create("connected");
     /**
-     * True while a meal sits in the pot. Not used by the model (the blockstate JSON keys only on facing) — it exists
+     * True while a meal sits in the pot. Not used by the model (the blockstate JSON keys only on facing), it exists
      * purely to carry the "has a meal" fact to nearby clients, since the block entity's inventory is not synced. It is
      * the client-visible mirror of {@code !getMeal().isEmpty()}, and lets {@link #animateTick} pick Farmer's Delight's
      * soup-boil sound over the water-boil one exactly as FD does.
@@ -62,7 +62,7 @@ public class MECookingPotBlock extends BaseEntityBlock {
     /**
      * Farmer's Delight's cooking-pot support, reused wholesale for parity: {@code NONE} plain, {@code TRAY} a grate and
      * legs added automatically when the pot stands on a {@code TRAY_HEAT_SOURCES} block, {@code HANDLE} a hanging bail
-     * you get by placing the pot against a block's underside — or by sneak + right-clicking it with an empty hand.
+     * you get by placing the pot against a block's underside, or by sneak + right-clicking it with an empty hand.
      */
     public static final EnumProperty<CookingPotSupport> SUPPORT =
             EnumProperty.create("support", CookingPotSupport.class);
@@ -109,7 +109,7 @@ public class MECookingPotBlock extends BaseEntityBlock {
                 : CookingPotSupport.NONE;
     }
 
-    /** Re-evaluate the tray whenever the block below changes — but never override a handle the player chose. */
+    /** Re-evaluate the tray whenever the block below changes, but never override a handle the player chose. */
     @Override
     protected BlockState updateShape(BlockState state, Direction facing, BlockState facingState, LevelAccessor level,
                                      BlockPos currentPos, BlockPos facingPos) {

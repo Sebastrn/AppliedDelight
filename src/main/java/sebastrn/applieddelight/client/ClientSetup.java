@@ -12,7 +12,7 @@ import sebastrn.applieddelight.AppliedDelight;
  *
  * <p>There is deliberately <em>no</em> block/item colour handler here any more. The pot used to borrow Farmer's
  * Delight's textures and multiply a blue tint over them at {@code tintindex 0}; it now ships its own art
- * ({@code me_cooking_pot_*}), so a tint would only fight the texture — in particular it would wash the purple ME
+ * ({@code me_cooking_pot_*}), so a tint would only fight the texture, in particular it would wash the purple ME
  * accents on {@code me_cooking_pot_parts} back to blue. The models carry no {@code tintindex} for the same reason.
  */
 @EventBusSubscriber(modid = AppliedDelight.ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)

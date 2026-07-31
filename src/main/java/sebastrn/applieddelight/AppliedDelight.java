@@ -17,12 +17,12 @@ import sebastrn.applieddelight.setup.CommonSetup;
 import appeng.items.tools.powered.powersink.PoweredItemCapabilities;
 
 /**
- * Applied Delight — cook Farmer's Delight meals straight from an Applied Energistics 2 network.
+ * Applied Delight, cook Farmer's Delight meals straight from an Applied Energistics 2 network.
  *
  * <p>The mod adds a single block, the <em>ME Cooking Pot</em>: a Farmer's-Delight-style cooking pot that still needs a
  * heat source below it to cook, but draws its ingredients from an ME network it links to wirelessly (a Wireless Access
  * Point), paying for that network access out of its own battery. It deliberately does not extend or modify Farmer's
- * Delight — it merely reads FD's cooking recipes and reacts to FD's heat-source tags.
+ * Delight, it merely reads FD's cooking recipes and reacts to FD's heat-source tags.
  */
 @Mod(AppliedDelight.ID)
 public final class AppliedDelight {
@@ -46,7 +46,7 @@ public final class AppliedDelight {
 
     /**
      * Hand our probe provider to The One Probe, if it is installed. The {@link ModList} check comes first so the addon
-     * class — and with it every TOP type it references — is never loaded when TOP is absent, keeping TOP optional.
+     * class, and with it every TOP type it references, is never loaded when TOP is absent, keeping TOP optional.
      */
     private void enqueueIMC(InterModEnqueueEvent event) {
         if (ModList.get().isLoaded(TheOneProbeAddon.MOD_ID)) {
@@ -58,7 +58,7 @@ public final class AppliedDelight {
      * Expose the ME Cooking Pot's battery as a Forge energy store. The ITEM cap makes the item chargeable in an AE2
      * Charger (or any FE charger) in a player's inventory, reusing AE2's own {@link PoweredItemCapabilities} bridge (the
      * item implements {@link appeng.api.implementations.items.IAEItemPowerStorage}). The BLOCK cap lets a placed pot be
-     * charged by energy cables (Mekanism, Flux, any FE transport) — which is also what makes those cables visually
+     * charged by energy cables (Mekanism, Flux, any FE transport), which is also what makes those cables visually
      * connect to it.
      */
     private void registerCapabilities(RegisterCapabilitiesEvent event) {

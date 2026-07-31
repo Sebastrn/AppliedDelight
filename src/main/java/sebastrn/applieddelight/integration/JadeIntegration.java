@@ -18,13 +18,13 @@ import sebastrn.applieddelight.blockentity.MECookingPotBlockEntity;
 import sebastrn.applieddelight.item.MECookingPotItem;
 
 /**
- * Shows the placed pot's battery and link state in Jade's HUD, matching what the item tooltip shows in the inventory —
+ * Shows the placed pot's battery and link state in Jade's HUD, matching what the item tooltip shows in the inventory, 
  * the same pair of lines AE2's Wireless Terminal uses, via AE2's own {@link Tooltips}/{@code GuiText}.
  *
  * <p>Jade discovers this class by scanning for {@link WailaPlugin}; nothing in the mod references it. Jade is therefore
  * a soft dependency (compileOnly), and none of this loads when Jade is absent.
  *
- * <p>The values travel through {@link IServerDataProvider} because the pot's energy and link are server-side state —
+ * <p>The values travel through {@link IServerDataProvider} because the pot's energy and link are server-side state, 
  * the block entity does not sync them to the client on its own, so reading the client copy here would show nothing.
  */
 @WailaPlugin

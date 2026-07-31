@@ -28,7 +28,7 @@ import java.util.List;
 
 /**
  * POC-A menu for the ME Cooking Pot: a Farmer's-Delight-style slot layout plus a custom recipe list rendered by the
- * screen. Recipe selection is sent with {@link #clickMenuButton} — the button id is an index into the cooking-recipe
+ * screen. Recipe selection is sent with {@link #clickMenuButton}, the button id is an index into the cooking-recipe
  * list that both sides sort identically, so no custom packet is needed.
  */
 public class MECookingPotMenu extends AbstractContainerMenu {
@@ -66,7 +66,7 @@ public class MECookingPotMenu extends AbstractContainerMenu {
     /**
      * Client constructor (via IContainerFactory): the block position rides across in the buffer, followed by the
      * player's view settings. They travel on the open buffer rather than as synced container data so the screen has
-     * them in {@code init()} — the panel changes the GUI's width, and reading it a tick later would resize on open.
+     * them in {@code init()}, the panel changes the GUI's width, and reading it a tick later would resize on open.
      */
     public MECookingPotMenu(int id, Inventory playerInventory, RegistryFriendlyByteBuf buf) {
         this(id, playerInventory, resolve(playerInventory, buf.readBlockPos()),
@@ -91,7 +91,7 @@ public class MECookingPotMenu extends AbstractContainerMenu {
         this.filterCraftableOnly = view.filterCraftableOnly();
         this.sortMode = view.sortMode();
 
-        // Ingredient slots — 2 rows x 3 columns (Farmer's Delight layout).
+        // Ingredient slots, 2 rows x 3 columns (Farmer's Delight layout).
         int inputStartX = 30, inputStartY = 17, slot = 18;
         for (int row = 0; row < 2; row++) {
             for (int col = 0; col < 3; col++) {
@@ -136,7 +136,7 @@ public class MECookingPotMenu extends AbstractContainerMenu {
         addDataSlots(data);
         addDataSlots(availabilityData);
 
-        // Let the pot draw ingredients from this player's inventory while the GUI is open — the recipe list already
+        // Let the pot draw ingredients from this player's inventory while the GUI is open, the recipe list already
         // counts those items, so cooking has to be able to reach them too.
         if (!level.isClientSide) {
             blockEntity.setCraftingPlayer(playerInventory.player);
@@ -193,7 +193,7 @@ public class MECookingPotMenu extends AbstractContainerMenu {
             } else {
                 sortMode = (sortMode + 1) % 3; // off -> A-Z -> Z-A -> off
             }
-            // Persist on the player, so every pot they open from now on — this session or after a restart — matches.
+            // Persist on the player, so every pot they open from now on, this session or after a restart, matches.
             player.setData(ADAttachments.POT_VIEW,
                     new ADAttachments.PotViewSettings(panelOpen, filterCraftableOnly, sortMode));
             return true;
@@ -221,7 +221,7 @@ public class MECookingPotMenu extends AbstractContainerMenu {
             }
 
             // Switching recipes clears the previous order out first (to the network first, player inventory as fallback). The
-            // output is left alone — those are the player's finished servings — and a waiting meal stays put, so the
+            // output is left alone, those are the player's finished servings, and a waiting meal stays put, so the
             // new batch simply cooks once the meal has been served out. No network link is required: an unlinked or
             // flat pot works as a plain cooking pot, sourcing only from the player's inventory.
             blockEntity.returnInputsAndContainer(player);
@@ -233,7 +233,7 @@ public class MECookingPotMenu extends AbstractContainerMenu {
             if (requested <= 0) {
                 return false;
             }
-            // Load what is actually obtainable — a partial batch beats refusing outright.
+            // Load what is actually obtainable, a partial batch beats refusing outright.
             int loaded = blockEntity.loadBatch(holder.value(), requested);
             if (loaded <= 0) {
                 return false;
@@ -271,7 +271,7 @@ public class MECookingPotMenu extends AbstractContainerMenu {
         return data.get(3);
     }
 
-    /** Increments whenever a container request found nothing — the screen flashes the button when it changes. */
+    /** Increments whenever a container request found nothing, the screen flashes the button when it changes. */
     public int getContainerFailureCount() {
         return data.get(4);
     }
@@ -285,7 +285,7 @@ public class MECookingPotMenu extends AbstractContainerMenu {
     }
 
     /**
-     * Applied client-side the moment a toggle is clicked, before the server confirms — the same optimistic update
+     * Applied client-side the moment a toggle is clicked, before the server confirms, the same optimistic update
      * vanilla does, where the client flips its own recipe book and then reports the change.
      */
     public void setPanelOpen(boolean open) {
@@ -317,7 +317,7 @@ public class MECookingPotMenu extends AbstractContainerMenu {
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
-        // The meal display slot is never movable — the meal must be served into the output via a container.
+        // The meal display slot is never movable, the meal must be served into the output via a container.
         if (index == MECookingPotBlockEntity.MEAL_DISPLAY_SLOT) {
             return ItemStack.EMPTY;
         }

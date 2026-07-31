@@ -71,7 +71,7 @@ public class MECookingPotItem extends BlockItem implements IAEItemPowerStorage {
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> lines, TooltipFlag flag) {
         super.appendHoverText(stack, context, lines, flag);
         lines.add(Tooltips.energyStorageComponent(getStoredEnergy(stack), capacity()));
-        // The item can only know whether a link is saved, not whether a placed pot could reach the network — so it
+        // The item can only know whether a link is saved, not whether a placed pot could reach the network, so it
         // shows Linked (has an access point) or Unlinked, never the Offline middle state.
         lines.add(linkComponent(getLinkedAccessPoint(stack) == null ? 0 : 2));
     }

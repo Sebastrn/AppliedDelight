@@ -37,7 +37,7 @@ public class MECookingPotScreen extends AbstractContainerScreen<MECookingPotMenu
     private static final int POT_GUI_WIDTH = 176;
     private static final int POT_GUI_HEIGHT = 166;
     private static final int PANEL_DARK = 0xFF373737;
-    /** Recipe-list backdrop — deliberately lighter than PANEL_DARK so the list reads as its own area. */
+    /** Recipe-list backdrop, deliberately lighter than PANEL_DARK so the list reads as its own area. */
     private static final int PANEL_LIGHT = 0xFF8B8B8B;
     private static final int SELECTED = 0xFF55FF55;
     private static final int BORDER = 0xFF232323;
@@ -67,7 +67,7 @@ public class MECookingPotScreen extends AbstractContainerScreen<MECookingPotMenu
     private static final int SORT_X = SCROLLBAR_X + SCROLLBAR_W - SORT_SIZE;
     private static final int SEARCH_X = GRID_X;
     private static final int SEARCH_W = SORT_X - 2 - SEARCH_X;
-    /** Recessed field shades — the inverse of the button bevel, so a field never reads as a button. */
+    /** Recessed field shades, the inverse of the button bevel, so a field never reads as a button. */
     private static final int FIELD_FACE = 0xFF2B2B2B;
     private static final int FIELD_SHADE = 0xFF1F1F1F;
     private static final int FIELD_LIT = 0xFF6E6E6E;
@@ -88,7 +88,7 @@ public class MECookingPotScreen extends AbstractContainerScreen<MECookingPotMenu
     private static final int CHECK_X = GRID_X - 1, CHECK_Y = GRID_Y + TRACK_H + 5, CHECK_SIZE = 9;
     // Action buttons sit beside the slots they act on: "request containers" left of the container slot, "send to
     // network" right of the output slot. They are 12px (the 18px slot at 1.5:1) and are *vertically centred* on the
-    // slot row rather than boxed to it — the slot visual boxes run y 54..72, centre 63, so a 12px button starts at 57.
+    // slot row rather than boxed to it, the slot visual boxes run y 54..72, centre 63, so a 12px button starts at 57.
     // A 3px gap keeps them off the slot borders: the container slot's box starts at x 91, the output slot's ends at 141.
     private static final int BTN_SIZE = 14;   // same square the sort toggle uses, so all three buttons match
     private static final int BTN_ROW_Y = 56;  // slot boxes run y 54..72, centre 63, so a 14px button starts at 56
@@ -111,7 +111,7 @@ public class MECookingPotScreen extends AbstractContainerScreen<MECookingPotMenu
     private long failFlashUntil = 0L;
 
     private List<RecipeHolder<CookingPotRecipe>> recipes = new ArrayList<>();
-    /** Display names, resolved once — rebuildVisible() sorts every frame and must not re-resolve item names. */
+    /** Display names, resolved once, rebuildVisible() sorts every frame and must not re-resolve item names. */
     private String[] recipeNames = new String[0];
     private final List<Integer> visible = new ArrayList<>();
     private int scrollRow = 0;
@@ -178,8 +178,8 @@ public class MECookingPotScreen extends AbstractContainerScreen<MECookingPotMenu
 
     /**
      * Filter, then order. Filters (search text, "craftable only") decide <em>what</em> is listed; ordering is then
-     * always the same two-level rule: <strong>craftable first, unconditionally</strong> — no search or sort setting
-     * turns that off — and the chosen name sort applied <em>within</em> each of the two blocks. The two blocks render
+     * always the same two-level rule: <strong>craftable first, unconditionally</strong>, no search or sort setting
+     * turns that off, and the chosen name sort applied <em>within</em> each of the two blocks. The two blocks render
      * as one continuous grid with no divider, so the seam is only where the ordering happens to change.
      *
      * <p>Craftable counts refresh a couple of times a second, so the list re-orders live as stock changes. That is
@@ -225,13 +225,13 @@ public class MECookingPotScreen extends AbstractContainerScreen<MECookingPotMenu
         super.render(g, mouseX, mouseY, partialTick);
         renderTooltip(g, mouseX, mouseY);
 
-        // Status-row tooltips — the whole LED+label / label+bar cluster is hoverable, not just the swatch.
+        // Status-row tooltips, the whole LED+label / label+bar cluster is hoverable, not just the swatch.
         int linkW = LINK_TEXT_X - LED_X + scaledWidth(linkLabel()) + 1;
         int batLabelX = batteryLabelX();
         if (inRegion(mouseX, mouseY, LED_X - 1, STATUS_TEXT_Y, linkW, 8)) {
             String linkMsg = switch (menu.getLinkState()) {
                 case 2 -> "Linked to a network";
-                case 1 -> "Linked, but offline — no power or out of range";
+                case 1 -> "Linked, but offline, no power or out of range";
                 default -> "Not linked";
             };
             g.renderTooltip(font, Component.literal(linkMsg), mouseX, mouseY);
@@ -247,7 +247,7 @@ public class MECookingPotScreen extends AbstractContainerScreen<MECookingPotMenu
         } else if (overReturnButton(mouseX, mouseY)) {
             g.renderComponentTooltip(font, List.of(
                     Component.literal("Send contents to the network"),
-                    Component.literal("Ingredients, containers and finished servings — the meal stays in the pot")
+                    Component.literal("Ingredients, containers and finished servings, the meal stays in the pot")
                             .withStyle(s -> s.withColor(0xAAAAAA))), mouseX, mouseY);
         } else if (overSortButton(mouseX, mouseY)) {
             String mode = switch (menu.getSortMode()) {
@@ -305,7 +305,7 @@ public class MECookingPotScreen extends AbstractContainerScreen<MECookingPotMenu
         renderContainerButton(g, x, y);
         renderReturnButton(g, x, y);
 
-        // Lit heat indicator, exactly as Farmer's Delight draws it — without this the pot never showed the burning
+        // Lit heat indicator, exactly as Farmer's Delight draws it, without this the pot never showed the burning
         // log, so there was no way to tell a heated pot from an unheated one at a glance.
         if (menu.isHeated()) {
             g.blit(FD_GUI, x + HEAT_ICON_X, y + HEAT_ICON_Y, 176, 0, HEAT_ICON_W, HEAT_ICON_H);
@@ -317,9 +317,9 @@ public class MECookingPotScreen extends AbstractContainerScreen<MECookingPotMenu
         }
 
         if (menu.isPanelOpen()) {
-            // Outer panel (dark) — wraps the title, the search row, the list and the filter row.
+            // Outer panel (dark), wraps the title, the search row, the list and the filter row.
             g.fill(x + GRID_X - 4, y + PANEL_TOP, x + PANEL_RIGHT, y + GRID_Y + TRACK_H + 20, PANEL_DARK);
-            // Inner list backdrop (light) — separates the scrollable recipes from the rows above and below.
+            // Inner list backdrop (light), separates the scrollable recipes from the rows above and below.
             g.fill(x + GRID_X - 2, y + GRID_Y - 2, x + SCROLLBAR_X + SCROLLBAR_W + 1, y + GRID_Y + TRACK_H + 2, PANEL_LIGHT);
             drawRecessedField(g, x + SEARCH_X, y + SEARCH_Y, SEARCH_W, SEARCH_H);
             renderSortButton(g, x, y);
@@ -361,7 +361,7 @@ public class MECookingPotScreen extends AbstractContainerScreen<MECookingPotMenu
     }
 
     /**
-     * A recessed field frame — the button bevel inverted (shadow top/left, highlight bottom/right) over a dark face.
+     * A recessed field frame, the button bevel inverted (shadow top/left, highlight bottom/right) over a dark face.
      * Buttons pop out, fields sink in, so the search box can never be mistaken for something clickable.
      */
     private void drawRecessedField(GuiGraphics g, int bx, int by, int w, int h) {
@@ -423,7 +423,7 @@ public class MECookingPotScreen extends AbstractContainerScreen<MECookingPotMenu
     private void renderReturnButton(GuiGraphics g, int x, int y) {
         int bx = x + RETURN_X, by = y + RETURN_Y;
         drawBeveledButton(g, bx, by, RETURN_W, RETURN_H, BTN_FACE);
-        // Contents going back out to storage — the sort toggle's arrow, stretched 2px taller so it fills the button
+        // Contents going back out to storage, the sort toggle's arrow, stretched 2px taller so it fills the button
         // rather than floating in it (the sort toggle shares a row with the search field and wants the shorter one).
         int cx = bx + RETURN_W / 2, cy = by + RETURN_H / 2;
         drawArrow(g, cx, cy, true, 0xFF3B3B3B, 1);
@@ -436,7 +436,7 @@ public class MECookingPotScreen extends AbstractContainerScreen<MECookingPotMenu
     /**
      * "Request serving containers" button. The pot never fetches containers on its own, so this is how a waiting meal
      * gets bottled without hand-carrying containers. Flashes red for a moment when the network had none, which is the
-     * only feedback available — the client cannot see network contents itself.
+     * only feedback available, the client cannot see network contents itself.
      */
     private void renderContainerButton(GuiGraphics g, int x, int y) {
         // The server bumps a counter on a failed request; noticing it change is how the client knows to flash.
@@ -450,7 +450,7 @@ public class MECookingPotScreen extends AbstractContainerScreen<MECookingPotMenu
         int bx = x + CONTAINER_X, by = y + CONTAINER_Y;
         drawBeveledButton(g, bx, by, CONTAINER_W, CONTAINER_H, failing ? BTN_FACE_FAIL : BTN_FACE);
         // Containers coming in: the sort toggle's 2px arrow language, shortened so the cup fits beneath it. The cup
-        // stays a light 1px U — at this size 2px walls crowd the arrow, and the open U reads well.
+        // stays a light 1px U, at this size 2px walls crowd the arrow, and the open U reads well.
         int cx = bx + CONTAINER_W / 2, cy = by + CONTAINER_H / 2;
         int ink = failing ? 0xFF3A1A1A : 0xFF3B3B3B;
         g.fill(cx - 1, cy - 5, cx + 1, cy - 1, ink);                  // shaft, 2px wide
@@ -480,9 +480,9 @@ public class MECookingPotScreen extends AbstractContainerScreen<MECookingPotMenu
         // Link LED (green connected, yellow linked-but-offline, red unlinked) + label, at the inventory's left edge.
         int lx = x + LED_X, ly = y + WIDGET_Y;
         int ledColor = switch (menu.getLinkState()) {
-            case 2 -> 0xFF3FD03F;   // green — connected
-            case 1 -> 0xFFD0C03F;   // yellow — linked but offline
-            default -> 0xFFD03F3F;  // red — unlinked
+            case 2 -> 0xFF3FD03F;   // green, connected
+            case 1 -> 0xFFD0C03F;   // yellow, linked but offline
+            default -> 0xFFD03F3F;  // red, unlinked
         };
         g.fill(lx - 1, ly - 1, lx + LED_SIZE + 1, ly + LED_SIZE + 1, BORDER);
         g.fill(lx, ly, lx + LED_SIZE, ly + LED_SIZE, ledColor);
@@ -605,7 +605,7 @@ public class MECookingPotScreen extends AbstractContainerScreen<MECookingPotMenu
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (overSortButton(mouseX, mouseY)) {
-            // Optimistic client flip, then report — the same pattern the other view toggles use.
+            // Optimistic client flip, then report, the same pattern the other view toggles use.
             menu.setSortMode((menu.getSortMode() + 1) % 3);
             sendViewToggle(MECookingPotMenu.TOGGLE_SORT);
             scrollRow = 0;

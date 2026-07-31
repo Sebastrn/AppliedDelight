@@ -12,7 +12,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
  * Data attached to the player.
  *
  * <p>Whether the recipe panel is open, and whether it is filtered to craftable recipes, are a <em>view preference of the
- * player</em> rather than state of any one pot — so they are stored on the player and saved with them, which is the same
+ * player</em> rather than state of any one pot, so they are stored on the player and saved with them, which is the same
  * scope vanilla gives its recipe book. Vanilla keeps the equivalent pair of booleans (open / filtering) per
  * {@code RecipeBookType} in {@code RecipeBookSettings}, written into the player's NBT; every furnace in a world
  * therefore shares one setting. This mirrors that: every ME Cooking Pot a player opens shows their preference.
@@ -39,7 +39,7 @@ public final class ADAttachments {
     }
 
     /**
-     * Recipe-panel view settings: the panel's open/closed state, its "craftable only" filter and the name-sort mode —
+     * Recipe-panel view settings: the panel's open/closed state, its "craftable only" filter and the name-sort mode, 
      * an extension of the two booleans vanilla's {@code RecipeBookSettings} keeps per recipe-book type.
      *
      * <p>The search query is deliberately <em>not</em> here: it is a momentary lookup, not a preference, so it lives on
@@ -52,7 +52,7 @@ public final class ADAttachments {
         public static final int SORT_ASC = 1;
         public static final int SORT_DESC = 2;
 
-        /** Panel open, unfiltered, unsorted — what a player who has never touched the toggles sees. */
+        /** Panel open, unfiltered, unsorted, what a player who has never touched the toggles sees. */
         public static final PotViewSettings DEFAULT = new PotViewSettings(true, false, SORT_OFF);
 
         public static final Codec<PotViewSettings> CODEC = RecordCodecBuilder.create(instance -> instance.group(
