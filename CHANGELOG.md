@@ -2,6 +2,15 @@
 
 All notable changes to **Applied Delight** are listed here.
 
+## 2.0.0
+
+The ME Cooking Pot now exposes every compatible Farmer's Delight cooking-pot recipe to AE2 as an autocrafting
+pattern. Each pot accepts one job at a time, while multiple pots can process jobs in parallel.
+
+Serving containers are requested as pattern inputs, item and fluid ingredient substitutions are supported, and
+finished meals are inserted directly into the crafting network. Active jobs and partial outputs survive chunk and
+server reloads, and the pot retries delivery when the network is unavailable or full.
+
 ## 1.1.0
 
 You can now power a placed ME Cooking Pot from energy cables. Run any Forge Energy cable (Mekanism, Flux, and the like) into one of its sides and it charges the battery and keeps it topped, so a stationary pot never runs down; pick it up and it runs on the stored charge as before. The item still charges in an AE2 Charger or any FE charger too.
