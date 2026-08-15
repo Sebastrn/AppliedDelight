@@ -95,7 +95,17 @@ public class MECookingPotMenu extends AbstractContainerMenu {
         int inputStartX = 30, inputStartY = 17, slot = 18;
         for (int row = 0; row < 2; row++) {
             for (int col = 0; col < 3; col++) {
-                addSlot(new SlotItemHandler(inventory, row * 3 + col, inputStartX + col * slot, inputStartY + row * slot));
+                addSlot(new SlotItemHandler(inventory, row * 3 + col, inputStartX + col * slot, inputStartY + row * slot) {
+                    @Override
+                    public boolean mayPlace(ItemStack stack) {
+                        return !blockEntity.isAutoCrafting() && super.mayPlace(stack);
+                    }
+
+                    @Override
+                    public boolean mayPickup(Player player) {
+                        return !blockEntity.isAutoCrafting();
+                    }
+                });
             }
         }
         // Meal display (result kept in the pot), serving-container input, finished-output.
@@ -113,12 +123,27 @@ public class MECookingPotMenu extends AbstractContainerMenu {
             }
         });
         // Serving-container input (bowls/bottles): the player may place them here, or use the request-containers button; the pot never pulls containers on its own.
-        addSlot(new SlotItemHandler(inventory, MECookingPotBlockEntity.CONTAINER_SLOT, 92, 55));
+        addSlot(new SlotItemHandler(inventory, MECookingPotBlockEntity.CONTAINER_SLOT, 92, 55) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return !blockEntity.isAutoCrafting() && super.mayPlace(stack);
+            }
+
+            @Override
+            public boolean mayPickup(Player player) {
+                return !blockEntity.isAutoCrafting();
+            }
+        });
         // Output: served meals land here (take them from here); cannot be placed into (FD's CookingPotResultSlot).
         addSlot(new SlotItemHandler(inventory, MECookingPotBlockEntity.OUTPUT_SLOT, 124, 55) {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return false;
+            }
+
+            @Override
+            public boolean mayPickup(Player player) {
+                return !blockEntity.isAutoCrafting();
             }
         });
 
@@ -181,6 +206,9 @@ public class MECookingPotMenu extends AbstractContainerMenu {
 
     @Override
     public boolean clickMenuButton(Player player, int id) {
+        if (blockEntity.isAutoCrafting() && id != TOGGLE_PANEL && id != TOGGLE_FILTER && id != TOGGLE_SORT) {
+            return false;
+        }
         if (id == CLEAR_SELECTION) {
             blockEntity.selectRecipe(null, 0);
             return true;
@@ -319,6 +347,9 @@ public class MECookingPotMenu extends AbstractContainerMenu {
     public ItemStack quickMoveStack(Player player, int index) {
         // The meal display slot is never movable, the meal must be served into the output via a container.
         if (index == MECookingPotBlockEntity.MEAL_DISPLAY_SLOT) {
+            return ItemStack.EMPTY;
+        }
+        if (blockEntity.isAutoCrafting() && index < INV_START) {
             return ItemStack.EMPTY;
         }
         ItemStack copy = ItemStack.EMPTY;

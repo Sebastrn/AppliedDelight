@@ -2,8 +2,10 @@ package sebastrn.applieddelight.blockentity;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerUnit;
+import appeng.api.crafting.IPatternDetails;
 import appeng.api.implementations.blockentities.IWirelessAccessPoint;
 import appeng.api.networking.IGrid;
+import appeng.api.networking.crafting.ICraftingProvider;
 import appeng.api.networking.security.IActionSource;
 import appeng.api.stacks.AEFluidKey;
 import appeng.api.stacks.AEItemKey;
@@ -57,6 +59,7 @@ import sebastrn.applieddelight.ADBlockEntities;
 import sebastrn.applieddelight.AppliedDelight;
 import sebastrn.applieddelight.block.MECookingPotBlock;
 import sebastrn.applieddelight.config.ServerConfig;
+import sebastrn.applieddelight.integration.ae2.AutoCookingPattern;
 import sebastrn.applieddelight.item.MECookingPotItem;
 import sebastrn.applieddelight.menu.MECookingPotMenu;
 import vectorwing.farmersdelight.common.block.entity.CookingPotBlockEntity;
@@ -80,7 +83,7 @@ import java.util.Optional;
  * ME network, paying for that network access out of the pot's battery. It does not extend Farmer's Delight; it only
  * reads FD's {@link CookingPotRecipe}s and implements FD's {@link HeatableBlockEntity} heat check.
  */
-public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider, HeatableBlockEntity {
+public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider, HeatableBlockEntity, ICraftingProvider {
 
     public static final int INPUT_SLOTS = 6;
     public static final int MEAL_DISPLAY_SLOT = 6;
@@ -187,7 +190,14 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
     private MEStorage meStorage;
     @Nullable
     private IGrid grid;
+    @Nullable
+    private IGrid craftingProviderGrid;
+    private List<IPatternDetails> autoCookingPatterns = List.of();
+    private int autoCookingPatternFingerprint = Integer.MIN_VALUE;
     private int ticksSinceNetworkRefresh = NETWORK_REFRESH_INTERVAL;
+
+    private boolean autoCrafting;
+    private ItemStack autoCraftingOutput = ItemStack.EMPTY;
 
     /** Container-data slots synced to the menu: cookTime, cookTimeTotal, link state, energy%, containerRequestFailures. */
     public static final int DATA_SLOTS = 5;
@@ -258,6 +268,85 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
         return grid != null && meStorage != null;
     }
 
+    public boolean isAutoCrafting() {
+        return autoCrafting;
+    }
+
+    // ------------------------------------------------------------------------------------------------------------
+    //  AE2 autocrafting provider
+    // ------------------------------------------------------------------------------------------------------------
+
+    @Override
+    public List<IPatternDetails> getAvailablePatterns() {
+        return autoCookingPatterns;
+    }
+
+    @Override
+    public boolean pushPattern(IPatternDetails patternDetails, KeyCounter[] inputHolders) {
+        if (level == null || level.isClientSide || craftingProviderGrid == null || craftingProviderGrid != grid
+                || isBusy()) {
+            return false;
+        }
+
+        AutoCookingPattern pattern = null;
+        for (IPatternDetails available : autoCookingPatterns) {
+            if (available.equals(patternDetails) && available instanceof AutoCookingPattern autoPattern) {
+                pattern = autoPattern;
+                break;
+            }
+        }
+        if (pattern == null) {
+            return false;
+        }
+
+        AutoCookingPattern.AcceptedInputs accepted = pattern.acceptInputs(inputHolders);
+        if (accepted == null || accepted.ingredients().length > INPUT_SLOTS) {
+            return false;
+        }
+
+        double cost = cfg().getDrainPerIngredient() * accepted.ingredients().length;
+        if (energy < cost) {
+            return false;
+        }
+
+        // AE2 retains ownership until every input has been validated above.
+        Arrays.fill(fluidSourced, false);
+        for (int i = 0; i < accepted.ingredients().length; i++) {
+            inventory.setStackInSlot(i, accepted.ingredients()[i]);
+            fluidSourced[i] = accepted.fluidSourced()[i];
+        }
+        if (!accepted.container().isEmpty()) {
+            inventory.setStackInSlot(CONTAINER_SLOT, accepted.container());
+        }
+
+        energy = Math.max(0, energy - cost);
+        cookTime = 0;
+        cookTimeTotal = 0;
+        mealContainerStack = ItemStack.EMPTY;
+        selectedRecipeId = pattern.recipeId();
+        craftTarget = 1;
+        autoCraftingOutput = pattern.output();
+        autoCrafting = true;
+        setChanged();
+        return true;
+    }
+
+    @Override
+    public boolean isBusy() {
+        if (autoCrafting || !isConnected()) {
+            return true;
+        }
+        if (selectedRecipeId != null || craftTarget > 0 || cookTime > 0) {
+            return true;
+        }
+        for (int i = 0; i < INVENTORY_SIZE; i++) {
+            if (!inventory.getStackInSlot(i).isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * The pot's link state, for the status LED and HUD tooltips: 0 = no access point saved (Unlinked), 1 = linked but
      * not currently connected, no power, out of range, or the network is down (Offline), 2 = actively connected
@@ -300,6 +389,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
      * false, so it would silently ignore ingredients loaded into it by hand.
      */
     public void selectRecipe(@Nullable ResourceLocation id, int target) {
+        if (autoCrafting) return;
         boolean cleared = id == null || target <= 0;
         this.selectedRecipeId = cleared ? null : id;
         this.craftTarget = cleared ? 0 : target;
@@ -319,6 +409,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
         if (++be.ticksSinceNetworkRefresh >= NETWORK_REFRESH_INTERVAL) {
             be.ticksSinceNetworkRefresh = 0;
             be.resolveAccessPoint();
+            be.refreshAutoCookingPatterns();
         }
         be.refreshConnection();
         be.updateConnectedState();
@@ -566,7 +657,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
         // the slots, so revert to plain cooking-pot behaviour (cook whatever is actually there) instead of latching on
         // the stale order. This never fires during normal cooking, nor while a full batch waits for meal-slot room, nor
         // while an unheated pot waits for heat: in all of those the loaded ingredients still match the selected recipe.
-        if (selectedRecipeId != null) {
+        if (selectedRecipeId != null && !autoCrafting) {
             Optional<RecipeHolder<?>> holder = level.getRecipeManager().byKey(selectedRecipeId);
             boolean stillMatches = holder.isPresent()
                     && holder.get().value() instanceof CookingPotRecipe cooking
@@ -614,9 +705,43 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
             }
         }
 
+        if (exportAutoCraftingOutput()) {
+            changed = true;
+        }
+
         if (changed) {
             setChanged();
         }
+    }
+
+    /** Inserts the active job's output and keeps any rejected remainder for the next tick. */
+    private boolean exportAutoCraftingOutput() {
+        if (!autoCrafting || autoCraftingOutput.isEmpty() || meStorage == null || accessPoint == null || !isConnected()) {
+            return false;
+        }
+
+        ItemStack output = inventory.getStackInSlot(OUTPUT_SLOT);
+        if (output.isEmpty() || !ItemStack.isSameItemSameComponents(output, autoCraftingOutput)) {
+            return false;
+        }
+
+        int offered = Math.min(output.getCount(), autoCraftingOutput.getCount());
+        AEItemKey key = AEItemKey.of(autoCraftingOutput);
+        if (key == null || offered <= 0) {
+            return false;
+        }
+        long inserted = meStorage.insert(key, offered, Actionable.MODULATE, new MachineSource(accessPoint));
+        if (inserted <= 0) {
+            return false;
+        }
+
+        output.shrink((int) inserted);
+        autoCraftingOutput.shrink((int) inserted);
+        if (autoCraftingOutput.isEmpty()) {
+            autoCrafting = false;
+            autoCraftingOutput = ItemStack.EMPTY;
+        }
+        return true;
     }
 
     @Nullable
@@ -655,7 +780,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
      * @return the number of crafts actually loaded (may be fewer than requested), or 0 if nothing was taken.
      */
     public int loadBatch(CookingPotRecipe recipe, int requested) {
-        if (level == null || requested <= 0 || !canAcceptBatch()) return 0;
+        if (level == null || autoCrafting || requested <= 0 || !canAcceptBatch()) return 0;
 
         List<Ingredient> ingredients = recipe.getIngredients();
         int count = ingredients.size();
@@ -837,7 +962,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
      * @return the number of sets actually added (0 if none could be).
      */
     public int topUpBatch(CookingPotRecipe recipe, int additional) {
-        if (level == null || additional <= 0 || selectedRecipeId == null) return 0;
+        if (level == null || autoCrafting || additional <= 0 || selectedRecipeId == null) return 0;
 
         List<Ingredient> ingredients = recipe.getIngredients();
         int count = ingredients.size();
@@ -963,6 +1088,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
      * @return true if any container arrived; false means nothing was available and the screen should say so.
      */
     public boolean requestContainers() {
+        if (autoCrafting) return false;
         ItemStack required = mealContainerStack;
         ItemStack meal = inventory.getStackInSlot(MEAL_DISPLAY_SLOT);
         if (required.isEmpty() || meal.isEmpty() || meStorage == null || accessPoint == null || !isConnected()) {
@@ -1004,6 +1130,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
      * a finished serving in the output does NOT block a new order; the batch simply sits until the meal is served out.
      */
     public boolean canAcceptBatch() {
+        if (autoCrafting) return false;
         for (int i = 0; i < INPUT_SLOTS; i++) {
             if (!inventory.getStackInSlot(i).isEmpty()) return false;
         }
@@ -1017,6 +1144,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
      * free servings.
      */
     public void returnContents(@Nullable Player player) {
+        if (autoCrafting) return;
         for (int i = 0; i < INPUT_SLOTS; i++) {
             releaseSlot(i, player, false);
         }
@@ -1036,6 +1164,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
      * the floor is the last resort, so nothing is ever destroyed.
      */
     public void returnInputsAndContainer(@Nullable Player player) {
+        if (autoCrafting) return;
         for (int i = 0; i < INPUT_SLOTS; i++) {
             releaseSlot(i, player, false);
         }
@@ -1243,6 +1372,7 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
      * item isn't the right container or there is no meal waiting. Mirrors {@code CookingPotBlockEntity#useHeldItemOnMeal}.
      */
     public ItemStack useHeldItemOnMeal(ItemStack container) {
+        if (autoCrafting) return ItemStack.EMPTY;
         ItemStack meal = inventory.getStackInSlot(MEAL_DISPLAY_SLOT);
         if (isContainerValid(container) && !meal.isEmpty()) {
             container.shrink(1);
@@ -1268,34 +1398,87 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
         }
     }
 
+    private void refreshAutoCookingPatterns() {
+        if (level == null || level.isClientSide) return;
+
+        List<RecipeHolder<CookingPotRecipe>> recipes = MECookingPotMenu.sortedRecipes(level);
+        int fingerprint = 1;
+        for (RecipeHolder<CookingPotRecipe> holder : recipes) {
+            fingerprint = 31 * fingerprint + holder.id().hashCode();
+            fingerprint = 31 * fingerprint + holder.value().hashCode();
+        }
+        if (fingerprint == autoCookingPatternFingerprint) {
+            return;
+        }
+
+        List<IPatternDetails> rebuilt = new ArrayList<>(recipes.size());
+        for (RecipeHolder<CookingPotRecipe> holder : recipes) {
+            if (holder.value().getIngredients().size() > INPUT_SLOTS) {
+                continue;
+            }
+            AutoCookingPattern pattern = AutoCookingPattern.fromRecipe(holder, level);
+            if (pattern != null) {
+                rebuilt.add(pattern);
+            }
+        }
+        autoCookingPatterns = List.copyOf(rebuilt);
+        autoCookingPatternFingerprint = fingerprint;
+        if (craftingProviderGrid != null) {
+            craftingProviderGrid.getCraftingService().refreshGlobalCraftingProvider(this);
+        }
+    }
+
     private void refreshConnection() {
+        IGrid liveGrid = null;
+        IWirelessAccessPoint liveAccessPoint = null;
+        MEStorage liveStorage = null;
+
         grid = null;
         meStorage = null;
         accessPoint = null;
 
-        if (linkedAccessPoint == null || energy <= 0) return;
-
-        // The link only identifies which NETWORK the pot belongs to, exactly how AE2's wireless terminal treats it.
-        // Reach is then judged against every access point on that grid, so building a nearer access point just works
-        // without re-linking the pot.
-        IGrid liveGrid = linkedAccessPoint.getGrid();
-        if (liveGrid == null) return;
-
-        accessPoint = selectReachableAccessPoint(liveGrid);
-        if (accessPoint == null) return;
-
-        // Keeping the link open is not free: pay the per-tick idle cost, or drop offline until recharged.
-        double idle = cfg().getIdleDrainPerTick();
-        if (idle > 0) {
-            if (energy < idle) {
-                energy = 0;
-                return;
+        if (linkedAccessPoint != null && energy > 0) {
+            // The link only identifies which NETWORK the pot belongs to, exactly how AE2's wireless terminal treats it.
+            // Reach is then judged against every access point on that grid, so building a nearer access point just works
+            // without re-linking the pot.
+            liveGrid = linkedAccessPoint.getGrid();
+            if (liveGrid != null) {
+                liveAccessPoint = selectReachableAccessPoint(liveGrid);
             }
-            energy -= idle;
+
+            if (liveAccessPoint != null) {
+                // Keeping the link open is not free: pay the per-tick idle cost, or drop offline until recharged.
+                double idle = cfg().getIdleDrainPerTick();
+                if (idle > 0 && energy < idle) {
+                    energy = 0;
+                    liveGrid = null;
+                    liveAccessPoint = null;
+                } else {
+                    energy -= idle;
+                    liveStorage = liveGrid.getStorageService().getInventory();
+                }
+            } else {
+                liveGrid = null;
+            }
         }
 
         grid = liveGrid;
-        meStorage = liveGrid.getStorageService().getInventory();
+        accessPoint = liveAccessPoint;
+        meStorage = liveStorage;
+        setCraftingProviderGrid(liveGrid);
+    }
+
+    private void setCraftingProviderGrid(@Nullable IGrid newGrid) {
+        if (craftingProviderGrid == newGrid) {
+            return;
+        }
+        if (craftingProviderGrid != null) {
+            craftingProviderGrid.getCraftingService().removeGlobalCraftingProvider(this);
+        }
+        craftingProviderGrid = newGrid;
+        if (craftingProviderGrid != null) {
+            craftingProviderGrid.getCraftingService().addGlobalCraftingProvider(this);
+        }
     }
 
     /**
@@ -1439,6 +1622,12 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
         }
     }
 
+    @Override
+    public void setRemoved() {
+        setCraftingProviderGrid(null);
+        super.setRemoved();
+    }
+
     // ------------------------------------------------------------------------------------------------------------
     //  Menu
     // ------------------------------------------------------------------------------------------------------------
@@ -1467,6 +1656,8 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
         mealContainerStack = ItemStack.parseOptional(registries, tag.getCompound("Container"));
         energy = tag.getDouble("Energy");
         craftTarget = tag.getInt("CraftTarget");
+        autoCraftingOutput = ItemStack.parseOptional(registries, tag.getCompound("AutoCraftingOutput"));
+        autoCrafting = tag.getBoolean("AutoCrafting") && !autoCraftingOutput.isEmpty();
         int fluidMask = tag.getInt("FluidSourced");
         for (int i = 0; i < INPUT_SLOTS; i++) {
             fluidSourced[i] = (fluidMask & (1 << i)) != 0;
@@ -1488,6 +1679,8 @@ public class MECookingPotBlockEntity extends BlockEntity implements MenuProvider
         tag.put("Container", mealContainerStack.saveOptional(registries));
         tag.putDouble("Energy", energy);
         tag.putInt("CraftTarget", craftTarget);
+        tag.putBoolean("AutoCrafting", autoCrafting);
+        tag.put("AutoCraftingOutput", autoCraftingOutput.saveOptional(registries));
         int fluidMask = 0;
         for (int i = 0; i < INPUT_SLOTS; i++) {
             if (fluidSourced[i]) fluidMask |= (1 << i);

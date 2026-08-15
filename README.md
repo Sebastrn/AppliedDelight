@@ -18,6 +18,8 @@ cooks any Farmer's Delight recipe using items stored in your ME system.
   from the network's fluid storage.
 - **Serving on your terms**, meals wait in the pot until you supply their container, by hand or with a button that
   requests it from the network.
+- **Native AE2 autocrafting**, every compatible cooking-pot recipe is exposed in ME terminals. A pot processes one
+  job at a time, requests the required serving containers and returns the finished meal directly to the network.
 
 ## Requirements
 
